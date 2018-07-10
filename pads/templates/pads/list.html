@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% for obj in object_list %}
+    {% include 'pads/snippets/card.html' with instance=obj %}
+  {% endfor %}
+{% endblock content %}

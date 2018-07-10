@@ -1,0 +1,14 @@
+.navbar{
+  background-color: rgb(132, 193, 56);
+  height: 5em;
+
+}
+
+@media (min-width: 992px) {
+  .navbar {
+  }
+}
+
+.fa {
+  font-size: 2em;
+}
