@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="card">
+    <div class="card text-center">
+      <div class="card-body">
+        <h1>{{ object.name }}</h1>
+        {% for name, value in object.get_fields %}
+            {% if value %}
+                {{ name }} : {{ value }}<br/>
+            {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

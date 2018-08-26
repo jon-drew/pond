@@ -1,33 +1,34 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import UpdateView, ListView, DetailView
 from django.http import Http404
-from django.shortcuts import render
+
+from django.shortcuts import render, redirect
 
 from .models import Pad
+from .forms import PadCreateForm, PadUpdateForm
+
 # Create your views here.
 
-class PadListView(ListView):
-    queryset = Pad.objects.all()
-    template_name = 'pads/list.html'
+def PadCreateView(request):
+    if request.method == "POST":
+        form = PadCreateForm(request.POST)
+        if form.is_valid():
+            pad = form.save(commit=False)
+            pad.save()
+            return redirect('pads:read', pad.slug)
+    else:
+        form = PadCreateForm()
+        return render(request, 'pads/create_pad.html', {'form': form})
 
-    def get_queryset(self, *args, **kwargs):
-        request = self.request
-        return Pad.objects.all()
-
-
-class PadDetailView(DetailView):
-    template_name = "pads/detail.html"
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(padDetailView, self).get_context_data(*args, **kwargs)
-        return context
-
-    def get_object(self, *args, **kwargs):
-        request = self.request
-        pk = self.kwargs.get('pk')
-        instance = Pad.objects.get_by_id(pk)
-        if instance is None:
-            raise Http404("Pad doesn't exist")
-        return instance
+def PadUpdateView(request):
+    if request.method == "POST":
+        form = PadUpdateForm(request.POST)
+        if form.is_valid():
+            pad = form.save(commit=False)
+            pad.save()
+            return redirect('pads:read', pad.slug)
+    else:
+        form = PadUpdateForm()
+        return render(request, 'pads/update_pad.html', {'form': form})
 
 class PadDetailSlugView(DetailView):
     template_name = 'pads/detail.html'
@@ -37,7 +38,7 @@ class PadDetailSlugView(DetailView):
         slug = self.kwargs.get('slug')
         try:
             instance = Pad.objects.get(slug=slug, active=True)
-        except pad.DoesNotExist:
+        except Pad.DoesNotExist:
             raise Http404('Pad does not exist')
         except Pad.MultipleObjectsReturned:
             qs = Pad.objects.filter(slug=slug, active=True)
@@ -45,3 +46,11 @@ class PadDetailSlugView(DetailView):
         except:
             raise Http404('Error in slug view')
         return instance
+
+class PadListView(ListView):
+    queryset = Pad.objects.all()
+    template_name = 'pads/list.html'
+
+    def get_queryset(self, *args, **kwargs):
+        request = self.request
+        return Pad.objects.all()

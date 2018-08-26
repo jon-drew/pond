@@ -1,6 +1,7 @@
 {% url 'home' as home_url %}
+{% url 'pads:list' as pad_list_url %}
+{% url 'events:list' as event_list_url %}
 {% url 'ribbits:list' as ribbit_list_url %}
-{% url 'products:list' as product_list_url %}
 {% url 'register' as register_url %}
 {% url 'login' as login_url %}
 {% url 'logout' as logout_url %}
@@ -22,7 +23,7 @@
               <a class="nav-link nav-icon fa fa-users" href="{{ home_url }}"><span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item {% if request.path == calendar_url %}active{% endif %}">
-              <a class="nav-link nav-icon fa fa-calendar" href="{{ calendar_url }}"><span class="sr-only">(current)</span></a>
+              <a class="nav-link nav-icon fa fa-calendar" href="{{ event_list_url }}"><span class="sr-only">(current)</span></a>
             </li>
           {% else %}
             <li class="nav-item {% if request.path == register_url %}active{% endif %}">
@@ -35,7 +36,7 @@
         <ul class="navbar-nav mr-auto text-center">
           {% if request.user.is_authenticated %}
             <li class="nav-item {% if request.path == product_list_url %}active{% endif %}">
-              <a class="nav-link nav-icon fa fa-map-signs" href="{{ product_list_url }}"><span class="sr-only">(current)</span></a>
+              <a class="nav-link nav-icon fa fa-map-signs" href="{{ pad_list_url }}"><span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <li class="nav-item dropdown">

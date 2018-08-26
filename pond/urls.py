@@ -28,4 +28,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', home_page, name='home'),
     url(r'^pads/', include(('pads.urls', 'pads'), namespace='pads')),
+    url(r'^events/', include(('events.urls', 'events'), namespace='events')),
+    url(r'^ribbits/', include(('ribbits.urls', 'ribbits'), namespace='ribbits')),
 ]
