@@ -16,7 +16,7 @@ class Pad(models.Model):
     address         = models.CharField(max_length=200)
     description     = models.TextField(max_length=200)
     active          = models.BooleanField(default=True)
-    slug            = models.SlugField(null=True, unique=True)
+    slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
     published_at    = models.DateTimeField(blank=True, null=True)
 

@@ -18,7 +18,6 @@ class Ribbit(models.Model):
     got_by          = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='receiver')
     event           = models.ForeignKey('events.Event', on_delete=models.CASCADE)
     response        = models.BooleanField(default=0)
-    title           = models.CharField(default='_', max_length=200)
     active          = models.BooleanField(default=True)
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)

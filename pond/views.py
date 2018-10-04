@@ -45,14 +45,8 @@ def register_page(request):
 def home_page(request):
     context = {
         'title':'hello world',
-        'content':'Welocome to pond',
+        'content':'Welcome to pond',
     }
-    if request.user.is_authenticated:
-        context = {
-            'title':'hello world',
-            'content':'Jump In',
-            'custom_welcome': 'Hello ', # + str(User),
-        }
 
     return render(request, 'home_page.html', context)
 

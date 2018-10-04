@@ -1,4 +1,5 @@
 {% url 'home' as home_url %}
+{% url 'hoppers:list' as hopper_list_url %}
 {% url 'pads:list' as pad_list_url %}
 {% url 'events:list' as event_list_url %}
 {% url 'ribbits:list' as ribbit_list_url %}
@@ -6,9 +7,6 @@
 {% url 'login' as login_url %}
 {% url 'logout' as logout_url %}
 {% url 'contact' as contact_url %}
-{% url 'about' as about_url %}
-{% url 'cart:home' as cart_url %}
-{% url 'calendar' as calendar_url %}
 
 {% load static %}
 
@@ -17,12 +15,12 @@
         <ul class="navbar-nav ml-auto text-center">
           {% if request.user.is_authenticated %}
             <li class="nav-item {% if request.path == ribbit_list_url %}active{% endif %}">
-              <a class="nav-link fa fa-commenting" href="{{ ribbit_list_url }}"><span class="sr-only">(current)</span></a>
+              <a class="nav-link nav-icon fa fa-commenting" href="{{ ribbit_list_url }}"><span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item {% if request.path == home_url %}active{% endif %}">
-              <a class="nav-link nav-icon fa fa-users" href="{{ home_url }}"><span class="sr-only">(current)</span></a>
+            <li class="nav-item {% if request.path == hopper_list_url %}active{% endif %}">
+              <a class="nav-link nav-icon fa fa-users" href="{{ hopper_list_url }}"><span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item {% if request.path == calendar_url %}active{% endif %}">
+            <li class="nav-item {% if request.path == event_list_url %}active{% endif %}">
               <a class="nav-link nav-icon fa fa-calendar" href="{{ event_list_url }}"><span class="sr-only">(current)</span></a>
             </li>
           {% else %}
@@ -35,14 +33,13 @@
     <div class="navbar-collapse collapse w-100 dual-collapse2 order-2 order-md-2">
         <ul class="navbar-nav mr-auto text-center">
           {% if request.user.is_authenticated %}
-            <li class="nav-item {% if request.path == product_list_url %}active{% endif %}">
+            <li class="nav-item {% if request.path == pad_list_url %}active{% endif %}">
               <a class="nav-link nav-icon fa fa-map-signs" href="{{ pad_list_url }}"><span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <li class="nav-item dropdown">
                 <a class="nav-link nav-icon fa fa-caret-square-o-down" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="{{ cart_url }}"> {{ request.session.cart_items }} <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
                     {% if request.user.is_authenticated %}
                       <a class="dropdown-item" href="{{ logout_url }}">Logout</a>
                     {% endif %}
