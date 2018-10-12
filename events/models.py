@@ -11,7 +11,7 @@ from django.urls import reverse
 from pond.utils import unique_slug_generator
 from django.utils import timezone
 
-from pads.models import Pad
+from hoppers.models import Hopper
 
 def default_start():
   return timezone.now() + timezone.timedelta(days=1)
@@ -20,6 +20,8 @@ def default_end():
   return timezone.now() + timezone.timedelta(hours=1) + timezone.timedelta(days=1)
 
 class Event(models.Model):
+    created_by      = models.ForeignKey('hoppers.Hopper', null=True, on_delete=models.CASCADE)
+    attending       = models.ManyToManyField(related_name='attending', through='ribbits.Ribbit', through_fields=('event', 'sent_by'), to='hoppers.Hopper')
     start           = models.DateTimeField(default=default_start)
     end             = models.DateTimeField(default=default_end)
     pad             = models.ForeignKey('pads.Pad', on_delete=models.CASCADE)
@@ -30,8 +32,11 @@ class Event(models.Model):
     created_at      = models.DateTimeField(default=timezone.now)
     published_at    = models.DateTimeField(blank=True, null=True)
 
+    def __repr__(self):
+        return self.slug
+
     def __str__(self):
-        return self.title
+        return str(self.title)
 
     def publish(self):
         self.published_at = timezone.now()
@@ -42,6 +47,14 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return reverse('events:read', kwargs={'slug': self.slug})
+
+    def respond(self):
+        # Creates a ribbit for the current user
+        return reverse('ribbits:create', kwargs={'event': self.slug})
+
+    def get_attending_list(self):
+        attending_list = self.attending.all()
+        return Hopper.objects.filter(id__in=attending_list)
 
 def event_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:

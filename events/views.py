@@ -4,15 +4,16 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 
 from .models import Event
-from .forms import EventCreateForm, EventUpdateForm
+from hoppers.models import Hopper
 
-# Create your views here.
+from .forms import EventCreateForm, EventUpdateForm
 
 def EventCreateView(request):
     if request.method == "POST":
         form = EventCreateForm(request.POST)
         if form.is_valid():
             event = form.save(commit=False)
+            event.created_by = Hopper.objects.get(user=request.user)
             event.save()
             return redirect('events:read', event.slug)
     else:
@@ -48,9 +49,10 @@ class EventDetailSlugView(DetailView):
         return instance
 
 class EventListView(ListView):
-    queryset = Event.objects.all()
     template_name = 'events/list.html'
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        return Event.objects.all()
+        hopper = Hopper.objects.get(user=request.user.id)
+        #return Event.objects.all()
+        return Event.objects.exclude(created_by__id=request.user.id).filter(created_by__in=hopper.get_listens_to_list())

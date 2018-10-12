@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Listen Up</h1>
     <form method="POST" class="pad-form text-center">{% csrf_token %}
       <label for="name">Username:</label>
       <div class="form-group">
         {{ form.first_hopper }}
       </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 {% endblock %}

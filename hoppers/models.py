@@ -14,8 +14,12 @@ from pond.utils import unique_slug_generator
 from django.utils import timezone
 
 class Hopper(models.Model):
-    user            = models.OneToOneField(User, on_delete=models.CASCADE)
-    listener        = models.ManyToManyField('self', through='Listener', symmetrical=False)
+    user            = models.OneToOneField(User, null=True, on_delete=models.SET_NULL)
+    listens_to      = models.ManyToManyField('self', through='Pair', symmetrical=False)
+    anonymous       = models.BooleanField(default=True)
+    email           = models.EmailField(null=True, max_length=100)
+    name            = models.CharField(null=True, max_length=100)
+    birth_date      = models.DateField(null=True)
     active          = models.BooleanField(default=True)
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
@@ -24,7 +28,10 @@ class Hopper(models.Model):
         return self.slug
 
     def __str__(self):
-        return str(self.user)
+        if self.anonymous:
+            return str(self.user)
+        else:
+            return str(self.slug)
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Hopper._meta.fields]
@@ -32,26 +39,38 @@ class Hopper(models.Model):
     def get_absolute_url(self):
         return reverse('hoppers:read', kwargs={'slug': self.slug})
 
+    def get_listens_to_list(self):
+        return Hopper.objects.filter(listens_to=self).only('first_hopper')
+
+    def add_pair(self):
+        return reverse('hoppers:create_pair', kwargs={'hopper': self.id})
+
 def hopper_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
+    if instance.email and instance.name and instance.birth_date:
+        instance.anonymous = False
 
 pre_save.connect(hopper_pre_save_receiver, sender=Hopper)
 
 @receiver(post_save, sender=User)
 def create_hopper(sender, instance, created, **kwargs):
     if created:
-        Hopper.objects.get_or_create(user=instance)
+        Hopper.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
 def save_Hopper(sender, instance, **kwargs):
     instance.hopper.save()
 
+class Pair(models.Model):
+    first_hopper = models.ForeignKey(Hopper, on_delete=models.CASCADE, related_name='first_hopper')
+    second_hopper = models.ForeignKey(Hopper, on_delete=models.CASCADE, related_name='second_hopper')
 
-class Listener(models.Model):
-    first_hopper = models.ForeignKey(Hopper, null=True, on_delete=models.SET_NULL, related_name='first_hopper')
-    second_hopper = models.ForeignKey(Hopper, null=True, on_delete=models.SET_NULL, related_name='second_hopper')
-    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        unique_together = (('first_hopper', 'second_hopper'),)
 
     def __repr__(self):
-        return u'%s, %s' % (self.first_hopper, self.second_hopper)
+        return  '_'.join([str(self.first_hopper), str(self.second_hopper)])
+
+    def __str__(self):
+        return  '_'.join([str(self.first_hopper), str(self.second_hopper)])

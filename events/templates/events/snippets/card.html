@@ -2,9 +2,13 @@
   <div class="card text-center">
     <div class="card-body">
       <h5 class="card-title">{{ instance.start }} - {{ instance.end }}</h5>
-      <h6 class="card-title">{{ instance.title }} @ {{ instance.pad }}</h6>
+      <a href="{{ instance.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ instance }}</span></a></br></br>
+      @</br></br>
+      <a href="{{ instance.pad.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ instance.pad }}</span></a></br></br>
       <p class="card-text">{{ instance.text }}</p>
-      <a href="{{ instance.get_absolute_url }}" class="btn btn-primary"<span class="badge">View</span></a>
+      {% if request.user not in instance.get_attending_list %}
+        <a href="{{ instance.respond }}" class="btn btn-default"<span class="badge">Ribbit</span></a></br></br>
+      {% endif %}
     </div>
   </div>
 </div>

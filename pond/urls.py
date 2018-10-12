@@ -23,14 +23,11 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.views.generic import TemplateView, CreateView
 
-from .views import home_page, about_page, contact_page, login_page, register_page
-
-
 urlpatterns = [
+    url(r'^$', auth_views.login, name='login'),
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', home_page, name='home'),
     url('^register/', CreateView.as_view(
             template_name='registration/register.html',
             form_class=UserCreationForm,

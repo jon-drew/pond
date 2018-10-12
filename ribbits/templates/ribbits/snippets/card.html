@@ -1,10 +1,9 @@
 <div class="card">
   <div class="card text-center">
     <div class="card-body">
-      <h5 class="card-title">From {{ instance.sent_by }} to {{ instance.got_by }}</h5>
-      <p class="card-text">For: {{ instance.event }}</p>
-      <p class="card-text">Replied: {{ instance.response }}</p>
-      <a href="{{ instance.get_absolute_url }}" class="btn btn-primary"<span class="badge">View</span></a>
+       <a href="{{ instance.sent_by.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ instance.sent_by }}</span></a></br></br>
+      is going to:</br></br>
+      <a href="{{ instance.event.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ instance.event }}</span></a>
     </div>
   </div>
 </div>

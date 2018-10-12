@@ -87,23 +87,9 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
 
-LOGIN_REDIRECT_URL = 'ribbits:list'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'hoppers:login_redirect'
+LOGOUT_REDIRECT_URL = '/login'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

@@ -4,12 +4,12 @@
   <div class="card">
     <div class="card text-center">
       <div class="card-body">
-        <h1>{{ object.title }}</h1>
-        {% for name, value in object.get_fields %}
-            {% if value %}
-                {{ name }} : {{ value }}<br/>
-            {% endif %}
-        {% endfor %}
+        {% if object.anonymous %}
+          <h1>{{ object.user }}</h1></br>
+        {% else %}
+          <h1>{{ object.name }}</br></h1>
+        {% endif %}
+      <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Listen</span></a>
       </div>
     </div>
   </div>

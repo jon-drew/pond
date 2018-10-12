@@ -5,10 +5,14 @@
     <div class="card text-center">
       <div class="card-body">
         <h1>{{ object.title }}</h1>
-        {% for name, value in object.get_fields %}
-            {% if value %}
-                {{ name }} : {{ value }}<br/>
-            {% endif %}
+        Pad: {{ object.pad }}</br>
+        Start: {{ object.start }}</br>
+        End: {{ object.end }}</br>
+        {{ object.text }}</br></br>
+        <a href="{{ instance.respond }}" class="btn btn-primary"<span class="badge">Ribbit</span></a></br></br>
+        Attending:</br>
+        {% for hopper in object.get_attending_list %}
+          <a href="{{ hopper.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ hopper.user }}</span></a>
         {% endfor %}
       </div>
     </div>

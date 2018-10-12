@@ -4,12 +4,9 @@
   <div class="card">
     <div class="card text-center">
       <div class="card-body">
-        <h1>From {{ object.sent_by }} to {{ object.got_by }}</h1>
-        {% for name, value in object.get_fields %}
-            {% if value %}
-                {{ name }} : {{ value }}<br/>
-            {% endif %}
-        {% endfor %}
+         <a href="{{ object.sent_by.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.sent_by }}</span></a></br>
+        is going to:</br>
+        <a href="{{ object.event.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.event }}</span></a>
       </div>
     </div>
   </div>
