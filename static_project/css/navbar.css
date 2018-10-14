@@ -19,7 +19,6 @@ body {margin:0;}
     position: fixed;
     top: 0;
     background-color: rgb(132, 193, 56);
-    overflow: auto;
 }
 
 .icon-bar a {
