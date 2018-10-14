@@ -48,7 +48,7 @@ class RibbitDetailSlugView(DetailView):
         return instance
 
 class RibbitListView(ListView):
-    template_name = 'Ribbits/list.html'
+    template_name = 'ribbits/list.html'
 
     def get_queryset(self, *args, **kwargs):
         hopper = Hopper.objects.get(user=self.request.user.id)
