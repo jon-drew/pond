@@ -13,11 +13,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='ribbit',
-            name='sent_to',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='receiver', to='hoppers.Hopper'),
-        ),
         migrations.AlterUniqueTogether(
             name='ribbit',
             unique_together={('sent_by', 'sent_to', 'event')},
