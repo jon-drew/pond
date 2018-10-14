@@ -24,7 +24,7 @@ SECRET_KEY = '$c*q7u)g7+3f83nl%#tpl_f*(hs&fb9dzz6oq&&rk91^#_g$vp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'pondsocial.herokuapp.com']
 
 # Application definition
 
