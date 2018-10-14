@@ -39,3 +39,7 @@ body {margin:0;}
 .active {
     background-color: #555;
 }
+
+.body {
+    padding-top: 5em;
+}
