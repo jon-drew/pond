@@ -6,7 +6,9 @@
       <div class="card-body">
         <h2>{{ object.user }}</h2>
         </br>
-      <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Listen</span></a>
+        {% if object.user != request.user %}
+          <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Follow</span></a>
+        {% endif %}
       </div>
     </div>
   </div>
