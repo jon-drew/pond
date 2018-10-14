@@ -1,2 +1,6 @@
-python
+pip
 Django
+Django-Heroku
+gunicorn
+pytz
+setuptools
