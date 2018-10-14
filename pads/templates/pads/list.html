@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
-
 {% block content %}
+  {% if not request.user.hopper.pad %}
+    <div class="text-center">
+        <a href="create" class="btn btn-primary"<span class="badge">Create Pad</a>
+        </br>
+        </br>
+    </div>
+  {% else %}
+    <div class="text-center">
+        <a href="update" class="btn btn-primary"<span class="badge">Update Pad</a>
+        </br>
+        </br>
+    </div>
+  {% endif %}
   {% for obj in object_list %}
     {% include 'pads/snippets/card.html' with instance=obj %}
   {% endfor %}

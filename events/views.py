@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 
 from .models import Event
 from hoppers.models import Hopper
+from pads.models import Pad
 
 from .forms import EventCreateForm, EventUpdateForm
 
@@ -13,9 +14,17 @@ def EventCreateView(request):
         form = EventCreateForm(request.POST)
         if form.is_valid():
             event = form.save(commit=False)
-            event.created_by = Hopper.objects.get(user=request.user)
-            event.save()
-            return redirect('events:read', event.slug)
+
+            # The event is always created by the current user, at their pad.
+            created_by = Hopper.objects.get(user=request.user)
+            event.created_by = created_by
+
+            try:
+                event.pad = Pad.objects.get(owner=created_by)
+                event.save()
+                return redirect('events:read', event.slug)
+            except Pad.DoesNotExist:
+                raise Http404('You must have a pad to create an event.')
     else:
         form = EventCreateForm()
         return render(request, 'events/create_event.html', {'form': form})
@@ -25,8 +34,17 @@ def EventUpdateView(request):
         form = EventUpdateForm(request.POST)
         if form.is_valid():
             event = form.save(commit=False)
-            event.save()
-            return redirect('events:read', event.slug)
+
+            # The event is always updated by the current user, at their pad.
+            created_by = Hopper.objects.get(user=request.user)
+            event.created_by = created_by
+
+            try:
+                event.pad = Pad.objects.get(owner=created_by)
+                event.save()
+                return redirect('events:read', event.slug)
+            except Pad.DoesNotExist:
+                raise Http404('You are not authorized to update this event.')
     else:
         form = EventUpdateForm()
         return render(request, 'events/update_event.html', {'form': form})

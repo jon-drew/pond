@@ -4,11 +4,8 @@
   <div class="card">
     <div class="card text-center">
       <div class="card-body">
-        {% if object.anonymous %}
-          <h1>{{ object.user }}</h1></br>
-        {% else %}
-          <h1>{{ object.name }}</br></h1>
-        {% endif %}
+        <h2>{{ object.user }}</h2>
+        </br>
       <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Listen</span></a>
       </div>
     </div>

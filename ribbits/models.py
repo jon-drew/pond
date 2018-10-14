@@ -13,6 +13,8 @@ from pond.utils import unique_slug_generator
 class Ribbit(models.Model):
     sent_by         = models.ForeignKey('hoppers.Hopper', on_delete=models.CASCADE, related_name='sender', null=True)
     event           = models.ForeignKey('events.Event', on_delete=models.CASCADE)
+    #likes          = models.IntegerField(null=True, editable=False)
+    #links          = models.IntegerField(null=True, editable=False)
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
 
@@ -21,15 +23,16 @@ class Ribbit(models.Model):
         ordering = ['-created_at']
 
     def __repr__(self):
-        return self.slug
+        return str(self.sent_by) + '_' + str(self.event)
 
     def __str__(self):
-        return str(self.slug)
+        return str(self.sent_by) + '_' + str(self.event)
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Ribbit._meta.fields]
 
     def get_absolute_url(self):
+        # Goes to self's details page
         return reverse('ribbits:read', kwargs={'slug': self.slug})
 
     def respond(self):

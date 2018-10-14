@@ -21,7 +21,7 @@ def default_end():
 
 class Event(models.Model):
     created_by      = models.ForeignKey('hoppers.Hopper', null=True, on_delete=models.CASCADE)
-    attending       = models.ManyToManyField(related_name='attending', through='ribbits.Ribbit', through_fields=('event', 'sent_by'), to='hoppers.Hopper')
+    attending       = models.ManyToManyField('hoppers.Hopper', related_name='attending')
     start           = models.DateTimeField(default=default_start)
     end             = models.DateTimeField(default=default_end)
     pad             = models.ForeignKey('pads.Pad', on_delete=models.CASCADE)
@@ -30,17 +30,12 @@ class Event(models.Model):
     active          = models.BooleanField(default=True)
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
-    published_at    = models.DateTimeField(blank=True, null=True)
 
     def __repr__(self):
-        return self.slug
+        return str(self.title)
 
     def __str__(self):
         return str(self.title)
-
-    def publish(self):
-        self.published_at = timezone.now()
-        self.save()
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Event._meta.fields]

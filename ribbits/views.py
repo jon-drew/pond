@@ -20,7 +20,7 @@ def RibbitCreateView(request, *args, **kwargs):
             new_ribbit.save()
 
             # Add user to event
-            event.attending += sent_by
+            event.attending.add(sent_by)
 
             return redirect('ribbits:list')
         else:
@@ -51,7 +51,6 @@ class RibbitListView(ListView):
     template_name = 'Ribbits/list.html'
 
     def get_queryset(self, *args, **kwargs):
-        user_id = self.request.user.id
-        hopper = Hopper.objects.get(user=user_id)
+        hopper = Hopper.objects.get(user=self.request.user.id)
         # Returns list of ribbit objects from hoppers the current user listens to
-        return Ribbit.objects.exclude(sent_by__id=user_id).filter(sent_by__in=hopper.get_listens_to_list())
+        return Ribbit.objects.exclude(sent_by=hopper).filter(sent_by__in=hopper.get_listens_to_list())

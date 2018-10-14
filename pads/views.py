@@ -1,20 +1,27 @@
 from django.views.generic import UpdateView, ListView, DetailView
 from django.http import Http404
+from django.db import IntegrityError
 
 from django.shortcuts import render, redirect
 
 from .models import Pad
-from .forms import PadCreateForm, PadUpdateForm
+from hoppers.models import Hopper
 
-# Create your views here.
+from .forms import PadCreateForm, PadUpdateForm
 
 def PadCreateView(request):
     if request.method == "POST":
-        form = PadCreateForm(request.POST)
-        if form.is_valid():
-            pad = form.save(commit=False)
-            pad.save()
-            return redirect('pads:read', pad.slug)
+        try:
+            form = PadCreateForm(request.POST)
+            if form.is_valid():
+                pad = form.save(commit=False)
+                # The pad is always created by the current user.
+                pad.owner = Hopper.objects.get(user=request.user)
+                pad.save()
+                return redirect('pads:read', pad.slug)
+        except IntegrityError:
+            return Http404('One pad per user.')
+
     else:
         form = PadCreateForm()
         return render(request, 'pads/create_pad.html', {'form': form})
@@ -24,11 +31,32 @@ def PadUpdateView(request):
         form = PadUpdateForm(request.POST)
         if form.is_valid():
             pad = form.save(commit=False)
+            # The pad is always updated by the current user.
+            pad.owner = Hopper.objects.get(user=request.user)
             pad.save()
             return redirect('pads:read', pad.slug)
     else:
         form = PadUpdateForm()
         return render(request, 'pads/update_pad.html', {'form': form})
+
+def PadUpdateView(request):
+    try:
+        pad = request.user.hopper.pad
+    except:
+        return Http404('No pad found.')
+
+    try:
+        if request.method == "POST":
+            form = PadUpdateForm(request.POST, instance=pad)
+            if form.is_valid():
+                pad = form.save(commit=False)
+                pad.save()
+                return redirect('pads:read', pad.slug)
+        else:
+            form = PadUpdateForm()
+            return render(request, 'pads/update_pad.html', {'form': form})
+    except:
+        raise Http404('Error in slug view.')
 
 class PadDetailSlugView(DetailView):
     template_name = 'pads/detail.html'

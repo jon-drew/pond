@@ -25,13 +25,13 @@ class Hopper(models.Model):
     created_at      = models.DateTimeField(default=timezone.now)
 
     def __repr__(self):
-        return self.slug
+        return str(self.user.username)
 
     def __str__(self):
         if self.anonymous:
-            return str(self.user)
+            return str(self.user.username)
         else:
-            return str(self.slug)
+            return str(self.name)
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Hopper._meta.fields]

@@ -11,3 +11,29 @@
 .fa {
   font-size: 2em;
 }
+
+body {margin:0;}
+
+.icon-bar {
+    width: 100%;
+    background-color: rgb(132, 193, 56);
+    overflow: auto;
+}
+
+.icon-bar a {
+    float: left;
+    width: 20%;
+    text-align: center;
+    padding: 12px 0;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 36px;
+}
+
+.icon-bar a:hover {
+    background-color: #000;
+}
+
+.active {
+    background-color: #555;
+}

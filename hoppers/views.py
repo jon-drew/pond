@@ -12,15 +12,18 @@ def HopperUpdateView(request):
     except UserProfile.DoesNotExist:
         hopper = Hopper(user=request.user)
 
-    if request.method == "POST":
-        form = HopperUpdateForm(request.POST, instance=hopper)
-        if form.is_valid():
-            hopper = form.save(commit=False)
-            hopper.save()
-            return redirect('hoppers:read', hopper.slug)
-    else:
-        form = HopperUpdateForm()
-        return render(request, 'hoppers/update_hopper.html', {'form': form})
+    try:
+        if request.method == "POST":
+            form = HopperUpdateForm(request.POST, instance=hopper)
+            if form.is_valid():
+                hopper = form.save(commit=False)
+                hopper.save()
+                return redirect('hoppers:read', hopper.slug)
+        else:
+            form = HopperUpdateForm()
+            return render(request, 'hoppers/update_hopper.html', {'form': form})
+    except:
+        raise Http404('Error in slug view.')
 
 class HopperDetailSlugView(DetailView):
     template_name = 'hoppers/detail.html'
@@ -46,7 +49,7 @@ class HopperListView(ListView):
         request = self.request.user.id
         hopper = Hopper.objects.get(user=request)
         #return Hopper.objects.all()
-        return Hopper.objects.exclude(id=request).exclude(id__in=hopper.get_listens_to_list())
+        return Hopper.objects.exclude(id=hopper.id).exclude(id__in=hopper.get_listens_to_list())
 
 def PairCreateView(request, *args, **kwargs):
     try:
@@ -69,6 +72,6 @@ def LoginRedirectView(request):
     """Redirector to figure out where the user goes next."""
     is_anonymous = Hopper.objects.get(user=request.user).anonymous
     if is_anonymous == 1:
-        return redirect('hoppers:update_hopper')
+        return redirect('hoppers:update')
     else:
         return redirect('ribbits:list')

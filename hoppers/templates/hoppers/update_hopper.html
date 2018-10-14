@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div class="text-center">
+      <a href="/logout" class="btn btn-primary"<span class="badge">Logout</a>
+      </br>
+      </br>
+    </div>
     <form method="POST" class="event-form text-center">{% csrf_token %}
       <label for="name">Name:</label>
       <div class="form-group">
@@ -14,6 +19,6 @@
       <div class="form-group">
         {{ form.birth_date }}
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Update Profile</button>
     </form>
 {% endblock %}
