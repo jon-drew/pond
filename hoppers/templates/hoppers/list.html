@@ -2,5 +2,6 @@
 {% block content %}
   {% for obj in object_list %}
     {% include 'hoppers/snippets/card.html' with instance=obj %}
+    </br>
   {% endfor %}
 {% endblock content %}
