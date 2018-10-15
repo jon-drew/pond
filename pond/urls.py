@@ -23,8 +23,10 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.views.generic import TemplateView, CreateView
 
+from .views import RedirectView
+
 urlpatterns = [
-    url(r'^$', auth_views.LoginView.as_view(), name='login'),
+    url(r'^$', RedirectView, name='login'),
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^admin/', admin.site.urls),
