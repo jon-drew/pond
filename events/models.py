@@ -43,7 +43,7 @@ class Event(models.Model):
     def get_absolute_url(self):
         return reverse('events:read', kwargs={'slug': self.slug})
 
-    def respond(self):
+    def create_ribbit(self):
         # Creates a ribbit for the current user
         return reverse('ribbits:create', kwargs={'event': self.slug})
 

@@ -12,7 +12,7 @@
       </br>
       </br>
       {% if request.user.hopper not in instance.get_attending_list %}
-        <a href="{{ instance.respond }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
+        <a href="{{ instance.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
         </br>
         </br>
       {% endif %}

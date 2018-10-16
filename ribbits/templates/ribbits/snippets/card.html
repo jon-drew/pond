@@ -4,10 +4,31 @@
       <a href="{{ instance.sent_by.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ instance.sent_by }}</span></a>
       </br>
       </br>
-      is going to:
+      {% now "DATETIME_FORMAT" as current_time %}
+      {% if instance.event.start|date:"DATETIME_FORMAT" > current_time %}
+        is going to:
+      {% else %}
+        went to:
+      {% endif %}
       </br>
       </br>
-      <a href="{{ instance.event.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ instance.event }}</span></a>
+      <a href="{{ instance.event.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ instance.event }}
+      </span></a>
+      </br>
+      </br>
+      {% if request.user.hopper not in instance.event.get_attending_list %}
+        <a href="{{ instance.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
+      {% endif %}
+      {% if request.user.hopper not in instance.get_likes_list and instance.event.start|date:"DATETIME_FORMAT" > current_time %}
+        <a href="{{ instance.add_to_likes }}" class="btn btn-primary"<span class="badge">Like</span></a>
+        </br>
+        </br>
+      {% endif %}
+      {% if request.user.hopper not in instance.get_spots_list and instance.event.start|date:"DATETIME_FORMAT" < current_time and request.user.hopper in instance.event.get_attending_list %}
+        <a href="{{ instance.add_to_spots }}" class="btn btn-primary"<span class="badge">Spotted</span></a>
+        </br>
+        </br>
+      {% endif %}
     </div>
   </div>
 </div>

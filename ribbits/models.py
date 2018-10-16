@@ -10,11 +10,13 @@ from django.urls import reverse
 from django.utils import timezone
 from pond.utils import unique_slug_generator
 
+from hoppers.models import Hopper
+
 class Ribbit(models.Model):
     sent_by         = models.ForeignKey('hoppers.Hopper', on_delete=models.CASCADE, related_name='sender', null=True)
     event           = models.ForeignKey('events.Event', on_delete=models.CASCADE)
-    #likes          = models.IntegerField(null=True, editable=False)
-    #links          = models.IntegerField(null=True, editable=False)
+    likes           = models.ManyToManyField('hoppers.Hopper', related_name='likes')
+    spots           = models.ManyToManyField('hoppers.Hopper', related_name='spots')
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
 
@@ -35,9 +37,25 @@ class Ribbit(models.Model):
         # Goes to self's details page
         return reverse('ribbits:read', kwargs={'slug': self.slug})
 
-    def respond(self):
+    def create_ribbit(self):
         # Creates a ribbit for the current user
         return reverse('ribbits:create', kwargs={'event': self.event.slug})
+
+    def add_to_likes(self):
+        # Adds the current user to the ribbit's likes field
+        return reverse('ribbits:like', kwargs={'ribbit': self.slug})
+
+    def add_to_spots(self):
+        # Adds the current user to the ribbit's spots field
+        return reverse('ribbits:spot', kwargs={'ribbit': self.slug})
+
+    def get_likes_list(self):
+        likes_list = self.likes.all()
+        return Hopper.objects.filter(id__in=likes_list)
+
+    def get_spots_list(self):
+        spots_list = self.spots.all()
+        return Hopper.objects.filter(id__in=spots_list)
 
 def ribbit_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:

@@ -27,7 +27,7 @@
         </br>
         </br>
         {% if request.user.hopper not in object.get_attending_list %}
-          <a href="{{ object.respond }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
+          <a href="{{ object.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
           </br>
           </br>
         {% endif %}

@@ -13,6 +13,7 @@ from .forms import RibbitCreateForm
 def RibbitCreateView(request, *args, **kwargs):
     try:
         if request.user.is_authenticated:
+
             # Create new ribbit
             sent_by = Hopper.objects.get(user=request.user)
             event = Event.objects.get(slug=kwargs.get('event'))
@@ -37,7 +38,10 @@ class RibbitDetailSlugView(DetailView):
         request = self.request
         slug = self.kwargs.get('slug')
         try:
-            instance = Ribbit.objects.get(slug=slug)
+            if request.user.is_authenticated:
+                instance = Ribbit.objects.get(slug=slug)
+            else:
+                return redirect('login')
         except Ribbit.DoesNotExist:
             raise Http404('Ribbit does not exist')
         except Ribbit.MultipleObjectsReturned:
@@ -54,3 +58,35 @@ class RibbitListView(ListView):
         hopper = Hopper.objects.get(user=self.request.user.id)
         # Returns list of ribbit objects from hoppers the current user listens to
         return Ribbit.objects.exclude(sent_by=hopper).filter(sent_by__in=hopper.get_listens_to_list())
+
+def LikeCreateView(request, *args, **kwargs):
+    try:
+        if request.user.is_authenticated:
+
+            # Add user to likes
+            sent_by = Hopper.objects.get(user=request.user)
+            ribbit = Ribbit.objects.get(slug=kwargs.get('ribbit'))
+            ribbit.likes.add(sent_by)
+            return redirect('ribbits:list')
+        else:
+            return redirect('login')
+    except IntegrityError:
+        return redirect('ribbits:list')
+    except:
+        raise Http404('Error liking that ribbit.')
+
+def SpotCreateView(request, *args, **kwargs):
+    try:
+        if request.user.is_authenticated:
+
+            # Add user to spots
+            sent_by = Hopper.objects.get(user=request.user)
+            ribbit = Ribbit.objects.get(slug=kwargs.get('ribbit'))
+            ribbit.spots.add(sent_by)
+            return redirect('ribbits:list')
+        else:
+            return redirect('login')
+    except IntegrityError:
+        return redirect('ribbits:list')
+    except:
+        raise Http404('Error spotting that ribbit.')
