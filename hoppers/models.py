@@ -40,10 +40,11 @@ class Hopper(models.Model):
         return reverse('hoppers:read', kwargs={'slug': self.slug})
 
     def get_listens_to_list(self):
-        return Hopper.objects.filter(listens_to=self).only('first_hopper')
+        listens_to_list = self.listens_to.all()
+        return Hopper.objects.filter(id__in=listens_to_list)
 
     def add_pair(self):
-        return reverse('hoppers:create_pair', kwargs={'hopper': self.id})
+        return reverse('hoppers:create_pair', kwargs={'slug': self.slug})
 
 def hopper_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:

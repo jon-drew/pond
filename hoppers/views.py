@@ -55,7 +55,7 @@ def PairCreateView(request, *args, **kwargs):
     try:
         if request.user.is_authenticated:
             # Create new pairing
-            first_hopper = Hopper.objects.get(id=kwargs.get('hopper'))
+            first_hopper = Hopper.objects.get(slug=kwargs.get('slug'))
             second_hopper = Hopper.objects.get(user=request.user)
             new_pair = Pair(first_hopper=first_hopper, second_hopper=second_hopper)
             new_pair.save()
