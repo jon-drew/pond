@@ -34,7 +34,7 @@
         Attending:
         </br>
         {% for hopper in object.get_attending_list %}
-          <a href="{{ hopper.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ hopper.user }}</span></a>
+          <a href="{{ hopper.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ hopper }}</span></a>
         {% endfor %}
       </div>
     </div>
