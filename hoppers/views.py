@@ -48,8 +48,8 @@ class HopperListView(ListView):
     def get_queryset(self, *args, **kwargs):
         hopper = Hopper.objects.get(user=self.request.user.id)
         #return Hopper.objects.all()
-        return Hopper.objects.exclude(id=hopper.id).exclude(id__in=self.request.user.hopper.listens_to.all())
         #return Hopper.objects.exclude(id=hopper.id).exclude(id__in=hopper.get_listens_to_list())
+        return Hopper.objects.exclude(id=hopper.id).exclude(id__in=self.request.user.hopper.listens_to.all())
 
 def PairCreateView(request, *args, **kwargs):
     try:

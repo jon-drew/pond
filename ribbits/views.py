@@ -57,7 +57,7 @@ class RibbitListView(ListView):
     def get_queryset(self, *args, **kwargs):
         hopper = Hopper.objects.get(user=self.request.user.id)
         # Returns list of ribbit objects from hoppers the current user listens to
-        return Ribbit.objects.exclude(sent_by=hopper).filter(sent_by__in=hopper.get_listens_to_list())
+        return Ribbit.objects.exclude(event__private=1).exclude(sent_by=hopper).filter(sent_by__in=hopper.get_listens_to_list())
 
 def LikeCreateView(request, *args, **kwargs):
     try:

@@ -12,9 +12,11 @@
     <div class="card text-center">
       <div class="card-body">
         {% if request.user.hopper in object.get_attending_list %}
-          You are attending!
-          </br>
-          </br>
+          <div class="fa fa-calendar-check-o">
+            You are attending!
+            </br>
+            </br>
+          </div>
         {% endif %}
         <h1>{{ object.title }}</h1>
         @

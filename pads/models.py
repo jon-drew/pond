@@ -36,7 +36,7 @@ class Pad(models.Model):
         return reverse('pads:read', kwargs={'slug': self.slug})
 
     def get_events_list(self):
-        return Event.objects.filter(pad=self)
+        return Event.objects.filter(pad=self).exclude(private=1)
 
 def pad_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
