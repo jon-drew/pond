@@ -11,6 +11,11 @@
   <div class="card">
     <div class="card text-center">
       <div class="card-body">
+        {% if request.user.hopper in object.get_attending_list %}
+          You are attending!
+          </br>
+          </br>
+        {% endif %}
         <h1>{{ object.title }}</h1>
         @
         </br>

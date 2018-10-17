@@ -40,8 +40,10 @@ class Hopper(models.Model):
         return reverse('hoppers:read', kwargs={'slug': self.slug})
 
     def get_listens_to_list(self):
-        listens_to_list = self.listens_to.all()
-        return Hopper.objects.filter(id__in=listens_to_list)
+        return Hopper.objects.filter(id__in=self.listens_to.all())
+
+    def get_count_of_listens_to_list(self):
+        return Hopper.objects.filter(id__in=self.listens_to.all()).count()
 
     def add_pair(self):
         return reverse('hoppers:create_pair', kwargs={'slug': self.slug})

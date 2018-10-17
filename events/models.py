@@ -31,6 +31,9 @@ class Event(models.Model):
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        ordering = ['start']
+
     def __repr__(self):
         return str(self.title)
 

@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class="text-center">
+      {% if request.user.hopper.get_count_of_listens_to_list == 0 %}
+        <a href="/hoppers" class="btn btn-primary"<span class="badge">To Begin Click Here</a>
+        </br>
+        </br>
+      {% endif %}
       <a href="/logout" class="btn btn-primary"<span class="badge">Logout</a>
       </br>
       </br>
@@ -21,4 +26,21 @@
       </div>
       <button type="submit" class="btn btn-primary">Update Profile</button>
     </form>
+    </br>
+    </br>
+    <div class="text-center">
+      <h2> Legend:</h2>
+      <div class="fa fa-commenting"> Ribbits (messages)</div>
+      </br>
+      <div class="fa fa-users"> Hoppers (users)</div>
+      </br>
+      <div class="fa fa-calendar"> Events</div>
+      </br>
+      <div class="fa fa-map-signs"> Pads (venues)</div>
+      </br>
+      <div class="fa fa-cogs"> Logout and Update Profile</div>
+      </br>
+    </div>
+
 {% endblock %}
+

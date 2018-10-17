@@ -46,17 +46,17 @@ class HopperListView(ListView):
     template_name = 'hoppers/list.html'
 
     def get_queryset(self, *args, **kwargs):
-        request = self.request.user.id
-        hopper = Hopper.objects.get(user=request)
+        hopper = Hopper.objects.get(user=self.request.user.id)
         #return Hopper.objects.all()
-        return Hopper.objects.exclude(id=hopper.id).exclude(id__in=hopper.get_listens_to_list())
+        return Hopper.objects.exclude(id=hopper.id).exclude(id__in=self.request.user.hopper.listens_to.all())
+        #return Hopper.objects.exclude(id=hopper.id).exclude(id__in=hopper.get_listens_to_list())
 
 def PairCreateView(request, *args, **kwargs):
     try:
         if request.user.is_authenticated:
             # Create new pairing
-            first_hopper = Hopper.objects.get(slug=kwargs.get('slug'))
-            second_hopper = Hopper.objects.get(user=request.user)
+            first_hopper = Hopper.objects.get(user=request.user)
+            second_hopper = Hopper.objects.get(slug=kwargs.get('slug'))
             new_pair = Pair(first_hopper=first_hopper, second_hopper=second_hopper)
             new_pair.save()
 

@@ -72,5 +72,6 @@ class EventListView(ListView):
     def get_queryset(self, *args, **kwargs):
         request = self.request
         hopper = Hopper.objects.get(user=request.user.id)
+        return Event.objects.filter(attending=hopper)
         #return Event.objects.all()
-        return Event.objects.exclude(created_by__id=request.user.id).filter(created_by__in=hopper.get_listens_to_list())
+        #return Event.objects.exclude(created_by__id=request.user.id).filter(created_by__in=hopper.get_listens_to_list())

@@ -1,12 +1,10 @@
 <div class="card">
   <div class="card text-center">
     <div class="card-body">
-      <h2 class="card-title">{{ instance.user }}</h2>
+      <h2 class="card-title">{{ object }}</h2>
       </br>
-      <a href="{{ instance.get_absolute_url }}" class="btn btn-primary"<span class="badge">View</span></a>
-      {% if object.user != request.user and request.user.hopper not in object.get_listens_to_list %}
-        <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Follow</span></a>
-      {% endif %}
+      <a href="{{ object.get_absolute_url }}" class="btn btn-primary"<span class="badge">View</span></a>
+      <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Listen</span></a>
     </div>
   </div>
 </div>

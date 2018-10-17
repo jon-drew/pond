@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
   {% for obj in object_list %}
-    {% include 'ribbits/snippets/card.html' with instance=obj %}
+    {% include 'ribbits/snippets/card.html' with object=obj %}
   {% endfor %}
 {% endblock content %}

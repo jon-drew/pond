@@ -5,9 +5,10 @@
     <div class="card text-center">
       <div class="card-body">
         <h2>{{ object }}</h2>
-        </br>
         {% if object.user != request.user and request.user.hopper not in object.get_listens_to_list %}
-          <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Follow</span></a>
+          <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Listen</span></a>
+          </br>
+          </br>
         {% endif %}
         Following:
         </br>

@@ -14,7 +14,7 @@
     </div>
   {% endif %}
   {% for obj in object_list %}
-    {% include 'pads/snippets/card.html' with instance=obj %}
+    {% include 'pads/snippets/card.html' with object=obj %}
     </br>
   {% endfor %}
 {% endblock content %}

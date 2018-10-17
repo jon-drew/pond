@@ -1,18 +1,18 @@
 <div class="card">
   <div class="card text-center">
     <div class="card-body">
-      <a href="{{ instance.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ instance }}</span></a>
+      <a href="{{ object.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object }}</span></a>
       @
-      <a href="{{ instance.pad.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ instance.pad }}</span></a>
+      <a href="{{ object.pad.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.pad }}</span></a>
       </br>
       </br>
-      Starts: {{ instance.start }}
+      Starts: {{ object.start }}
       </br>
-      Ends: {{ instance.end }}
+      Ends: {{ object.end }}
       </br>
       </br>
-      {% if request.user.hopper not in instance.get_attending_list %}
-        <a href="{{ instance.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
+      {% if request.user.hopper not in object.get_attending_list %}
+        <a href="{{ object.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
         </br>
         </br>
       {% endif %}
