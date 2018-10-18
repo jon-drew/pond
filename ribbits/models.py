@@ -17,6 +17,7 @@ class Ribbit(models.Model):
     event           = models.ForeignKey('events.Event', on_delete=models.CASCADE)
     likes           = models.ManyToManyField('hoppers.Hopper', related_name='likes')
     spots           = models.ManyToManyField('hoppers.Hopper', related_name='spots')
+    sent_to         = models.ManyToManyField('hoppers.Hopper', related_name='sent_to')
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
 

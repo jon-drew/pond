@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
     <form method="POST" class="event-form text-center">{% csrf_token %}
-      <label for="start">Event:</label>
-      <div class="form-group">
-        {{ form.event }}
-      </div>
       <label for="description">Send To:</label>
       <div class="form-group">
         {{ form.sent_to }}

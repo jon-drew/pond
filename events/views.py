@@ -22,6 +22,8 @@ def EventCreateView(request):
             try:
                 event.pad = Pad.objects.get(owner=created_by)
                 event.save()
+                if event.private == 1:
+                    return redirect('ribbits:create_from_form', event=event.slug)
                 return redirect('events:read', event.slug)
             except Pad.DoesNotExist:
                 raise Http404('You must have a pad to create an event.')

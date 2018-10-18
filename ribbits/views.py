@@ -20,10 +20,38 @@ def RibbitCreateView(request, *args, **kwargs):
             new_ribbit = Ribbit(sent_by=sent_by, event=event)
             new_ribbit.save()
 
-            # Add user to event
+            # Add hopper to event
             event.attending.add(sent_by)
 
             return redirect('ribbits:list')
+        else:
+            return redirect('login')
+    except IntegrityError:
+        return redirect('ribbits:list')
+    except:
+        raise Http404('Error creating ribbit.')
+
+def RibbitCreateFromFormView(request, *args, **kwargs):
+    try:
+        if request.user.is_authenticated:
+            if request.method == "POST":
+                form = RibbitCreateForm(request.POST)
+                if form.is_valid():
+                    ribbit = form.save(commit=False)
+
+                    # Add to new ribbit
+                    ribbit.sent_by = Hopper.objects.get(user=request.user)
+                    event = Event.objects.get(slug=kwargs.get('event'))
+                    ribbit.event = event
+
+                    # Add hopper to event
+                    event.attending.add(Hopper.objects.get(user=request.user))
+
+                    ribbit.save()
+                    return redirect('ribbits:list')
+            else:
+                form = RibbitCreateForm()
+                return render(request, 'ribbits/create_ribbit.html', {'form': form})
         else:
             return redirect('login')
     except IntegrityError:
@@ -57,7 +85,9 @@ class RibbitListView(ListView):
     def get_queryset(self, *args, **kwargs):
         hopper = Hopper.objects.get(user=self.request.user.id)
         # Returns list of ribbit objects from hoppers the current user listens to
-        return Ribbit.objects.exclude(event__private=1).exclude(sent_by=hopper).filter(sent_by__in=hopper.get_listens_to_list())
+        public_ribbits = Ribbit.objects.exclude(event__private=1).exclude(sent_by=hopper).filter(sent_by__in=hopper.get_listens_to_list())
+        private_ribbits = Ribbit.objects.filter(sent_to=self.request.user.hopper)
+        return public_ribbits | private_ribbits
 
 def LikeCreateView(request, *args, **kwargs):
     try:

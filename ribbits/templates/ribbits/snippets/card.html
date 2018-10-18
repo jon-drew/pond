@@ -18,6 +18,8 @@
       </br>
       {% if request.user.hopper not in object.event.get_attending_list %}
         <a href="{{ object.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
+        </br>
+        </br>
       {% endif %}
       {% if request.user.hopper not in object.get_likes_list and object.event.start|date:"DATETIME_FORMAT" > current_time %}
         <a href="{{ object.add_to_likes }}" class="btn btn-primary"<span class="badge">Like</span></a>

@@ -4,7 +4,7 @@ from django import forms
 from django.forms import ModelForm
 
 class HopperUpdateForm(ModelForm):
-    birth_date = forms.DateField(help_text='Format: YYYY-MM-DD')
+    birth_date = forms.DateField(widget=forms.SelectDateWidget)
 
     class Meta:
         model = Hopper
