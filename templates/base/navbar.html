@@ -8,7 +8,7 @@
 
 {% load static %}
 
-<div class="icon-bar fixed-top">
+<div class="icon-bar navbar-fixed-top">
   {% if request.user.is_authenticated %}
     <a class="nav-link nav-icon fa fa-commenting {% if request.path == ribbit_list_url %}active{% endif %}" href="{{ ribbit_list_url }}"></a>
     <a class="nav-link nav-icon fa fa-users {% if request.path == hopper_list_url %}active{% endif %}" href="{{ hopper_list_url }}"></a>

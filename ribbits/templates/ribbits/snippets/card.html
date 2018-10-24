@@ -2,20 +2,14 @@
   <div class="card text-center">
     <div class="card-body">
       <a href="{{ object.sent_by.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.sent_by }}</span></a>
-      </br>
-      </br>
       {% now "DATETIME_FORMAT" as current_time %}
       {% if object.event.start|date:"DATETIME_FORMAT" > current_time %}
         is going to:
       {% else %}
         went to:
       {% endif %}
-      </br>
-      </br>
       <a href="{{ object.event.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.event }}
       </span></a>
-      </br>
-      </br>
       {% if request.user.hopper not in object.event.get_attending_list %}
         <a href="{{ object.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
         </br>
@@ -25,9 +19,11 @@
         <a href="{{ object.add_to_likes }}" class="btn btn-primary"<span class="badge">Like</span></a>
         </br>
         </br>
+        </br>
       {% endif %}
       {% if request.user.hopper not in object.get_spots_list and object.event.start|date:"DATETIME_FORMAT" < current_time and request.user.hopper in object.event.get_attending_list %}
         <a href="{{ object.add_to_spots }}" class="btn btn-primary"<span class="badge">Spotted</span></a>
+        </br>
         </br>
         </br>
       {% endif %}

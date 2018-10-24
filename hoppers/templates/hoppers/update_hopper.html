@@ -5,9 +5,11 @@
       {% if request.user.hopper.get_count_of_listens_to_list == 0 %}
         <a href="/hoppers" class="btn btn-primary"<span class="badge">To Begin Click Here</a>
         </br>
-        </br>
       {% endif %}
+      </br>
+      <h3>{{ request.user.hopper }}</h3>
       <a href="/logout" class="btn btn-primary"<span class="badge">Logout</a>
+      </br>
       </br>
       </br>
     </div>
@@ -20,7 +22,7 @@
       <div class="form-group">
         {{ form.email }}
       </div>
-      <label for="birth_date">Birthday (YYYY-MM-DD):</label>
+      <label for="birth_date">Birthday:</label>
       <div class="form-group">
         {{ form.birth_date }}
       </div>
@@ -28,19 +30,16 @@
     </form>
     </br>
     </br>
-    <div class="text-center">
-      <h2> Legend:</h2>
-      <div class="fa fa-commenting"> Ribbits (messages)</div>
+<!--     <div class="text-center">
+      <h2> Welcome to Pond</h2>
+      <div class="fa fa-users"> In here you are a hopper</div>
       </br>
-      <div class="fa fa-users"> Hoppers (users)</div>
+      <div class="fa fa-calendar"> Attending events</div>
       </br>
-      <div class="fa fa-calendar"> Events</div>
+      <div class="fa fa-map-signs"> At other hoppers' pads</div>
       </br>
-      <div class="fa fa-map-signs"> Pads (venues)</div>
+      <div class="fa fa-commenting"> Ribbits let others know you're attending</div>
       </br>
-      <div class="fa fa-cogs"> Logout and Update Profile</div>
-      </br>
-    </div>
-
+    </div> -->
 {% endblock %}
 
