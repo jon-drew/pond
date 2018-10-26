@@ -3,7 +3,7 @@
 {% block content %}
   {% if object.created_by == request.user.hopper %}
     <div class="text-center">
-      <a href="/events/update" class="btn btn-primary"<span class="badge">Update Event</span></a>
+      <a href="update" class="btn btn-primary"<span class="badge">Update Event</span></a>
       </br>
       </br>
     </div>
@@ -14,13 +14,12 @@
         </br>
         <div class="fa fa-calendar-check-o">
           You are attending!
-          </br>
-          </br>
         </div>
       {% endif %}
+      </br>
       <h1>{{ object.title }}</h1>
       @
-      <a href="{{ object.pad.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.pad }}</span></a>
+      <a href="{{ object.pad.get_absolute_url }}" class="btn btn-default"<span class="badge">{{ object.pad }}</span></a>
       </br>
       </br>
       Starts: {{ object.start|date:"D, M d, fA" }}
@@ -32,7 +31,7 @@
       </br>
       </br>
       {% if request.user.hopper not in object.get_attending_list %}
-        <a href="{{ object.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
+        <a href="{{ object.create_ribbit }}" class="btn btn-default"<span class="badge">Ribbit</span></a>
         </br>
         </br>
       {% endif %}
@@ -40,7 +39,7 @@
       </br>
       </br>
       {% for hopper in object.get_attending_list %}
-        <a href="{{ hopper.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ hopper }}</span></a>
+        <a href="{{ hopper.get_absolute_url }}" class="btn btn-default"<span class="badge">{{ hopper }}</span></a>
       {% endfor %}
     </div>
     </br>

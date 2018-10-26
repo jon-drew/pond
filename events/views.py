@@ -2,12 +2,15 @@ from django.views.generic import UpdateView, ListView, DetailView
 from django.http import Http404
 
 from django.shortcuts import render, redirect
+from django.utils.text import slugify
 
 from .models import Event
 from hoppers.models import Hopper
 from pads.models import Pad
 
 from .forms import EventCreateForm, EventUpdateForm
+
+from pond.utils import random_string_generator
 
 def EventCreateView(request):
     if request.method == "POST":
@@ -31,22 +34,26 @@ def EventCreateView(request):
         form = EventCreateForm()
         return render(request, 'events/create_event.html', {'form': form})
 
-def EventUpdateView(request):
+def EventUpdateView(request, slug):
     if request.method == "POST":
         form = EventUpdateForm(request.POST)
         if form.is_valid():
-            event = form.save(commit=False)
+            event = Event.objects.get(slug=slug)
+            form = form.save(commit=False)
 
-            # The event is always updated by the current user, at their pad.
-            created_by = Hopper.objects.get(user=request.user)
-            event.created_by = created_by
+            # Assigning form values to event
+            event.start = form.start
+            event.end = form.end
+            event.title = form.title
+            event.text = form.text
+            event.private = form.private
+            event.slug = slugify(form.title + '_' + random_string_generator())
 
-            try:
-                event.pad = Pad.objects.get(owner=created_by)
-                event.save()
-                return redirect('events:read', event.slug)
-            except Pad.DoesNotExist:
-                raise Http404('You are not authorized to update this event.')
+            # The pad is always updated by the current user, at their pad.
+            event.created_by = Hopper.objects.get(user=request.user)
+            event.pad = Pad.objects.get(owner=request.user.hopper)
+            event.save()
+            return redirect('events:read', event.slug)
     else:
         form = EventUpdateForm()
         return render(request, 'events/update_event.html', {'form': form})

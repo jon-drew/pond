@@ -26,7 +26,7 @@ class Event(models.Model):
     end             = models.DateTimeField(default=default_end)
     pad             = models.ForeignKey('pads.Pad', on_delete=models.CASCADE)
     title           = models.CharField(max_length=20)
-    text            = models.TextField()
+    text            = models.TextField(null=True)
     private         = models.BooleanField(default=True)
     active          = models.BooleanField(default=True)
     slug            = models.SlugField(null=True, unique=True, editable=False)
