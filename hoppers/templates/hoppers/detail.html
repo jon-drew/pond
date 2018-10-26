@@ -1,34 +1,39 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
-  <div class="card">
-    <div class="card text-center">
-      <div class="card-body">
-        </br>
-        <h2>{{ object }}</h2>
-        {% if object.user != request.user and object not in request.user.hopper.get_listens_to_list %}
-          <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Follow</span></a>
-          </br>
-          </br>
-        {% endif %}
-        <h3>
-          Ribbits:
-        </h3>
-        </br>
-        {% for ribbit in object.get_ribbits_list %}
-          <a href="{{ ribbit.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ ribbit }}</span></a>
-        {% endfor %}
-      </div>
-        <h3>
-          Following:
-        </h3>
-        </br>
-        {% for hopper in object.get_listens_to_list %}
-          <a href="{{ hopper.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ hopper }}</span></a>
-        {% endfor %}
-      </div>
-
+<div class="card text-center">
+  </br>
+  <img class="card-img-top" src="{% static 'img/frog.jpg' %}" alt="Card image">
+  <div class="card-body">
+    </br>
+    <h2>{{ object }}</h2>
+    {% if object.user != request.user and object not in request.user.hopper.get_listens_to_list %}
+      <a href="{{ object.add_pair }}" class="btn btn-default"
+        <span class="badge">Follow</span>
+      </a>
       </br>
-    </div>
+      </br>
+    {% endif %}
+    <h3>
+      Ribbits:
+    </h3>
+    </br>
+    {% for ribbit in object.get_ribbits_list %}
+      <a href="{{ ribbit.get_absolute_url }}" class="btn btn-default"
+        <span class="badge">{{ ribbit }}</span>
+      </a>
+    {% endfor %}
+    <h3>
+      Following:
+    </h3>
+    </br>
+    {% for hopper in object.get_listens_to_list %}
+      <a href="{{ hopper.get_absolute_url }}" class="btn btn-default"
+        <span class="badge">{{ hopper }}</span>
+      </a>
+    {% endfor %}
   </div>
+
+  </br>
+</div>
 {% endblock %}

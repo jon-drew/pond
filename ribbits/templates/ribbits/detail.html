@@ -4,10 +4,48 @@
   <div class="card">
     <div class="card text-center">
       <div class="card-body">
-         <a href="{{ object.sent_by.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.sent_by }}</span></a></br>
-        is going to:</br>
-        <a href="{{ object.event.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.event }}</span></a>
+        </br>
+        <a href="{{ object.sent_by.get_absolute_url }}" class="btn btn-default"
+          <span class="badge">{{ object.sent_by }}</span>
+        </a>
+        </br>
+        <h3>
+          {% if object.event.started %}
+            went to:
+          {% else %}
+            is going to:
+          {% endif %}
+        </h3>
+        </br>
+        <a href="{{ object.event.get_absolute_url }}" class="btn btn-default"
+          <span class="badge">{{ object.event }}</span>
+        </a>
       </div>
+      </br>
+      Score: {{ object.get_ribbit_score }}
+      </br>
+      </br>
+      {% for hopper in object.get_ribbits_list %}
+        <a href="{{ hopper.get_absolute_url }}" class="btn btn-default"
+          <span class="badge">Ribbited by {{ hopper }}</span>
+        </a>
+          </br>
+          </br>
+      {% endfor %}
+      {% for hopper in object.get_spots_list %}
+        <a href="{{ hopper.get_absolute_url }}" class="btn btn-default"
+          <span class="badge">Spotted by {{ hopper }}</span>
+        </a>
+          </br>
+          </br>
+      {% endfor %}
+      {% for hopper in object.get_likes_list %}
+        <a href="{{ hopper.get_absolute_url }}" class="btn btn-default"
+          <span class="badge">Liked by {{ hopper }}</span>
+        </a>
+          </br>
+          </br>
+      {% endfor %}
     </div>
   </div>
 {% endblock %}

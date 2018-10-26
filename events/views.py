@@ -1,3 +1,5 @@
+import datetime
+
 from django.views.generic import UpdateView, ListView, DetailView
 from django.http import Http404
 
@@ -53,6 +55,8 @@ def EventUpdateView(request, slug):
             event.created_by = Hopper.objects.get(user=request.user)
             event.pad = Pad.objects.get(owner=request.user.hopper)
             event.save()
+            if event.private == 1:
+                return redirect('ribbits:create_from_form', event=event.slug)
             return redirect('events:read', event.slug)
     else:
         form = EventUpdateForm()
@@ -80,6 +84,7 @@ class EventListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        hopper = Hopper.objects.get(user=request.user.id)
-        return Event.objects.filter(attending=hopper).filter(created_by=hopper)
-        #return Event.objects.exclude(created_by__id=request.user.id).filter(created_by__in=hopper.get_listens_to_list())
+        hopper = Hopper.objects.get(user=request.user)
+        attending = Event.objects.filter(attending=hopper).exclude(start__gte=datetime.datetime.now())
+        created = Event.objects.filter(created_by=hopper).exclude(start__gte=datetime.datetime.now())
+        return attending | created

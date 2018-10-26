@@ -1,38 +1,46 @@
-<div class="card">
-  <div class="card text-center">
-    <div class="card-body">
-      </br>
-      <a href="{{ object.sent_by.get_absolute_url }}" class="btn btn-default"
-        <span class="badge">{{ object.sent_by }}</span>
-      </a>
-      <h3>
-        {% if object.event.has_not_started %}
-          is going to:
-        {% else %}
-          went to:
-        {% endif %}
-      </h3>
-      </br>
-      <a href="{{ object.event.get_absolute_url }}" class="btn btn-default"
-        <span class="badge">{{ object.event }}</span>
-      </a>
-      </br>
-      </br>
-      {% if request.user.hopper not in object.event.get_attending_list and object.event.has_not_started %}
-        <a href="{{ object.create_ribbit }}" class="btn btn-default"<span class="badge">Ribbit</span></a>
+<div class="card text-center">
+  <div class="card-body">
+    </br>
+    <a href="{{ object.sent_by.get_absolute_url }}" class="btn btn-default"
+      <span class="badge">{{ object.sent_by }}</span>
+    </a>
+    <h3>
+      {% if object.event.started %}
+        went to:
+      {% else %}
+        is going to:
       {% endif %}
-      {% if request.user.hopper not in object.get_likes_list and object.event.has_not_started %}
-        <a href="{{ object.add_to_likes }}" class="btn btn-default"<span class="badge">Like</span></a>
-      {% endif %}
-      {% if request.user.hopper not in object.get_spots_list and request.user.hopper in object.event.get_attending_list and object.event.has_not_started is False %}
-        <a href="{{ object.add_to_spots }}" class="btn btn-default"
-          <span class="badge">Spotted</span>
+    </h3>
+    </br>
+    <a href="{{ object.event.get_absolute_url }}" class="btn btn-default"
+      <span class="badge">{{ object.event }}</span>
+    </a>
+    </br>
+    </br>
+    {% if request.user.hopper not in object.event.get_attending_list and object.event.started is False %}
+      <a href="{{ object.create_ribbit }}" class="btn btn-default"<span class="badge">Ribbit</span></a>
+    {% endif %}
+    {% if request.user.hopper not in object.get_likes_list and object.event.started is False %}
+      <a href="{{ object.add_to_likes }}" class="btn btn-default"
+        <span class="badge">Like</span>
+      </a>
+    {% else %}
+    <a href="{{ object.get_absolute_url }}" class="btn btn-default"
+        <span class="badge">{{ object.get_likes_list.count }} Like(s)</span>
+      </a>
+    {% endif %}
+    {% if request.user.hopper not in object.get_spots_list and request.user.hopper in object.event.get_attending_list and object.event.started %}
+      <a href="{{ object.add_to_spots }}" class="btn btn-default"
+        <span class="badge">Spotted</span>
+      </a>
+    {% else %}
+      {% if object.event.started %}
+        <a href="{{ object.get_absolute_url }}" class="btn btn-default"
+          <span class="badge">{{ object.get_spots_list.count }} Spot(s)</span>
         </a>
       {% endif %}
-      </br>
-      </br>
-    </div>
+    {% endif %}
+    </br>
+    </br>
   </div>
 </div>
-</br>
-</br>

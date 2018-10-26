@@ -63,6 +63,17 @@ class Ribbit(models.Model):
         spots_list = self.spots.all()
         return Hopper.objects.filter(id__in=spots_list)
 
+    def get_ribbits_list(self):
+        ribbits_list = self.sent_to.all()
+        return Hopper.objects.filter(id__in=ribbits_list)
+
+    def get_ribbit_score(self):
+        score = 0
+        score += self.likes.all().count() * 1
+        score += self.spots.all().count() * 3
+        score += self.sent_to.all().count() * 10
+        return score
+
 def ribbit_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)

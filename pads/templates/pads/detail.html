@@ -20,7 +20,7 @@
         <div>Events:</div>
         </br>
         {% for event in object.get_events_list %}
-          <a href="{{ event.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ event }}</span></a>
+          <a href="{{ event.get_absolute_url }}" class="btn btn-default"<span class="badge">{{ event }}</span></a>
         {% endfor %}
         </br>
         </br>

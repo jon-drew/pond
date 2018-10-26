@@ -5,11 +5,12 @@
       {% if request.user.hopper.get_count_of_listens_to_list == 0 %}
         <a href="/hoppers" class="btn btn-primary"<span class="badge">To Begin Click Here</a>
         </br>
+        </br>
       {% endif %}
-      <h3>{{ request.user.hopper }}</h3>
-      <a href="/logout" class="btn btn-primary"<span class="badge">Logout</a>
-      </br>
-      </br>
+      <div>
+        <a href="{{ request.user.hopper.get_absolute_url }}" class="btn btn-primary">View Profile</a>
+        <a href="/logout" class="btn btn-primary"<span class="badge">Logout</a>
+      </div>
       </br>
     </div>
     <form method="POST" class="event-form text-center">{% csrf_token %}

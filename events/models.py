@@ -60,8 +60,8 @@ class Event(models.Model):
         attending_list = self.attending.all()
         return Hopper.objects.filter(id__in=attending_list)
 
-    def has_not_started(self):
-        if self.start >= timezone.now():
+    def started(self):
+        if self.start <= timezone.now():
             return True
         return False
 
