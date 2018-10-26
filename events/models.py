@@ -20,7 +20,7 @@ def default_end():
   return timezone.now() + timezone.timedelta(hours=1) + timezone.timedelta(days=1)
 
 class Event(models.Model):
-    created_by      = models.ForeignKey('hoppers.Hopper', null=True, on_delete=models.CASCADE)
+    created_by      = models.ForeignKey('hoppers.Hopper', null=True, on_delete=models.SET_NULL)
     attending       = models.ManyToManyField('hoppers.Hopper', related_name='attending')
     start           = models.DateTimeField(default=default_start)
     end             = models.DateTimeField(default=default_end)

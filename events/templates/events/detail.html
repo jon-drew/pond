@@ -8,42 +8,41 @@
       </br>
     </div>
   {% endif %}
-  <div class="card">
-    <div class="card text-center">
-      <div class="card-body">
-        {% if request.user.hopper in object.get_attending_list %}
-          <div class="fa fa-calendar-check-o">
-            You are attending!
-            </br>
-            </br>
-          </div>
-        {% endif %}
-        <h1>{{ object.title }}</h1>
-        @
+  <div class="card text-center">
+    <div class="card-body">
+      {% if request.user.hopper in object.get_attending_list %}
         </br>
-        </br>
-        <a href="{{ object.pad.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.pad }}</span></a>
-        </br>
-        </br>
-        Starts: {{ object.start|date:"D, M d, fA" }}
-        </br>
-        Ends: {{ object.end|date:"D, M d, fA" }}
-        </br>
-        </br>
-        {{ object.text }}
-        </br>
-        </br>
-        {% if request.user.hopper not in object.get_attending_list %}
-          <a href="{{ object.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
+        <div class="fa fa-calendar-check-o">
+          You are attending!
           </br>
           </br>
-        {% endif %}
-        Attending:
+        </div>
+      {% endif %}
+      <h1>{{ object.title }}</h1>
+      @
+      <a href="{{ object.pad.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.pad }}</span></a>
+      </br>
+      </br>
+      Starts: {{ object.start|date:"D, M d, fA" }}
+      </br>
+      Ends: {{ object.end|date:"D, M d, fA" }}
+      </br>
+      </br>
+      {{ object.text }}
+      </br>
+      </br>
+      {% if request.user.hopper not in object.get_attending_list %}
+        <a href="{{ object.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
         </br>
-        {% for hopper in object.get_attending_list %}
-          <a href="{{ hopper.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ hopper }}</span></a>
-        {% endfor %}
-      </div>
+        </br>
+      {% endif %}
+      Attending:
+      </br>
+      </br>
+      {% for hopper in object.get_attending_list %}
+        <a href="{{ hopper.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ hopper }}</span></a>
+      {% endfor %}
     </div>
+    </br>
   </div>
 {% endblock %}

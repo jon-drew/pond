@@ -9,19 +9,21 @@
     </div>
   {% endif %}
   <div class="card">
+    </br>
     <div class="card text-center">
       <div class="card-body">
-        <h1>{{ object.name }}</h1>
-        </br>
+        <h2 class="card-title">{{ object.name }}</h2>
         <h3>{{ object.address }}</h3>
         </br>
-        {{ object.description }}
+        <div>{{ object.description }}</div>
         </br>
+        <div>Events:</div>
         </br>
-        <h4>Events:</h4>
         {% for event in object.get_events_list %}
           <a href="{{ event.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ event }}</span></a>
         {% endfor %}
+        </br>
+        </br>
       </div>
     </div>
   </div>
