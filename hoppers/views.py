@@ -32,6 +32,7 @@ class HopperDetailSlugView(DetailView):
         request = self.request
         slug = self.kwargs.get('slug')
         try:
+            # Get the hopper instance from the url
             instance = Hopper.objects.get(slug=slug, active=True)
         except Hopper.DoesNotExist:
             raise Http404('Hopper does not exist')
@@ -40,6 +41,7 @@ class HopperDetailSlugView(DetailView):
             instance = qs.first()
         except:
             raise Http404('Error in slug view')
+
         return instance
 
 class HopperListView(ListView):
@@ -47,7 +49,6 @@ class HopperListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         hopper = Hopper.objects.get(user=self.request.user.id)
-        #return Hopper.objects.all()
         #return Hopper.objects.exclude(id=hopper.id).exclude(id__in=hopper.get_listens_to_list())
         return Hopper.objects.exclude(id=hopper.id).exclude(id__in=self.request.user.hopper.listens_to.all())
 

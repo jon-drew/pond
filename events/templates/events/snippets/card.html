@@ -1,15 +1,23 @@
-<div class="card">
-  <div class="card text-center">
-    <div class="card-body">
-      {{ object.start|date:"D M d fA" }}
-      <a href="{{ object.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object }}</span></a>
-      @
-      <a href="{{ object.pad.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.pad }}</span></a>
-      {% if request.user.hopper not in object.get_attending_list %}
-        <a href="{{ object.create_ribbit }}" class="btn btn-primary"<span class="badge">Ribbit</span></a>
-        </br>
-        </br>
-      {% endif %}
-    </div>
+{% load static %}
+<div class="card text-center">
+  </br>
+  {{ object.start|date:"D, M d" }}
+  </br>
+  </br>
+  <img class="card-img-top" src="{% static 'img/frog.jpg' %}" alt="Card image">
+  <div class="card-body text-center">
+    </br>
+    </br>
+    <a href="{{ object.get_absolute_url }}" class="btn btn-default"
+      <span class="badge">{{ object }}</span>
+    </a>
+    @
+    <a href="{{ object.pad.get_absolute_url }}" class="btn btn-default"
+      <span class="badge">{{ object.pad }}</span>
+    </a>
+    {% if request.user.hopper not in object.get_attending_list %}
+      <a href="{{ object.create_ribbit }}" class="btn btn-default"<span class="badge">Ribbit</span></a>
+    {% endif %}
   </div>
+  </br>
 </div>

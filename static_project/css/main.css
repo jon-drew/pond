@@ -2,6 +2,9 @@ body {
   padding-top: 80px;
 }
 
-.btn {
+.card {
   background-color: rgb(132, 193, 56);
+  border-radius: 5em;
+  color: white;
+  margin-bottom: 2em
 }

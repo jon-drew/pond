@@ -10,7 +10,33 @@ from events.models import Event
 
 from .forms import RibbitCreateForm
 
-def RibbitCreateView(request, *args, **kwargs):
+def RibbitRibbitCreateView(request, *args, **kwargs):
+    try:
+        if request.user.is_authenticated:
+
+            # Create new ribbit
+            new_ribbit_creator = Hopper.objects.get(user=request.user)
+            origin = Ribbit.objects.get(slug=kwargs.get('ribbit'))
+            event = origin.event
+            new_ribbit = Ribbit(sent_by=new_ribbit_creator, event=event)
+            new_ribbit.save()
+
+            # Add hopper to event
+            event.attending.add(new_ribbit_creator)
+
+            # Add hopper to ribbit that they connected from
+            origin.sent_to.add(new_ribbit_creator)
+
+
+            return redirect('ribbits:list')
+        else:
+            return redirect('login')
+    except IntegrityError:
+        return redirect('ribbits:list')
+    # except:
+    #     raise Http404('Error creating ribbit.')
+
+def RibbitEventCreateView(request, *args, **kwargs):
     try:
         if request.user.is_authenticated:
 
@@ -31,7 +57,7 @@ def RibbitCreateView(request, *args, **kwargs):
     except:
         raise Http404('Error creating ribbit.')
 
-def RibbitCreateFromFormView(request, *args, **kwargs):
+def RibbitFormCreateView(request, *args, **kwargs):
     try:
         if request.user.is_authenticated:
             if request.method == "POST":

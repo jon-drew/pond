@@ -15,8 +15,8 @@ from events.models import Event
 from hoppers.models import Hopper
 
 class Pad(models.Model):
-    name            = models.CharField(max_length=50)
-    address         = models.CharField(max_length=200)
+    name            = models.CharField(max_length=20)
+    address         = models.CharField(max_length=100)
     description     = models.TextField(max_length=200)
     owner           = models.OneToOneField(Hopper, null=True, on_delete=models.SET_NULL)
     active          = models.BooleanField(default=True)

@@ -5,18 +5,29 @@
     <div class="card text-center">
       <div class="card-body">
         <h2>{{ object }}</h2>
-        {% if object.user != request.user and request.user.hopper not in object.get_listens_to_list %}
+        {% if object.user != request.user and object not in request.user.hopper.get_listens_to_list %}
           <a href="{{ object.add_pair }}" class="btn btn-primary"<span class="badge">Follow</span></a>
           </br>
           </br>
         {% endif %}
-        Following:
+        <h3>
+          Ribbits:
+        </h3>
         </br>
+        {% for ribbit in object.get_ribbits_list %}
+          <a href="{{ ribbit.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ ribbit }}</span></a>
+        {% endfor %}
+      </div>
+        <h3>
+          Following:
+        </h3>
         </br>
         {% for hopper in object.get_listens_to_list %}
           <a href="{{ hopper.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ hopper }}</span></a>
         {% endfor %}
       </div>
+
+      </br>
     </div>
   </div>
 {% endblock %}

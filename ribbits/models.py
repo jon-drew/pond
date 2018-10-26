@@ -20,6 +20,7 @@ class Ribbit(models.Model):
     sent_to         = models.ManyToManyField('hoppers.Hopper', related_name='sent_to')
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
+    deleted_at      = models.DateTimeField(null=True)
 
     class Meta:
         unique_together = (('sent_by', 'event'),)
@@ -31,6 +32,10 @@ class Ribbit(models.Model):
     def __str__(self):
         return str(self.sent_by) + '_' + str(self.event)
 
+    def delete(self):
+        self.deleted_at = timezone.now()
+        self.save()
+
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Ribbit._meta.fields]
 
@@ -40,7 +45,7 @@ class Ribbit(models.Model):
 
     def create_ribbit(self):
         # Creates a ribbit for the current user
-        return reverse('ribbits:create', kwargs={'event': self.event.slug})
+        return reverse('ribbits:create_from_ribbit', kwargs={'ribbit': self.slug})
 
     def add_to_likes(self):
         # Adds the current user to the ribbit's likes field

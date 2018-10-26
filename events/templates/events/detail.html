@@ -25,9 +25,9 @@
         <a href="{{ object.pad.get_absolute_url }}" class="btn btn-primary"<span class="badge">{{ object.pad }}</span></a>
         </br>
         </br>
-        Starts: {{ object.start }}
+        Starts: {{ object.start|date:"D, M d, fA" }}
         </br>
-        Ends: {{ object.end }}
+        Ends: {{ object.end|date:"D, M d, fA" }}
         </br>
         </br>
         {{ object.text }}

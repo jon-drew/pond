@@ -5,10 +5,8 @@
       <a href="/events/create" class="btn btn-primary"<span class="badge">Create Event</a>
     </div>
     </br>
-    </br>
   {% endif %}
   {% for obj in object_list %}
     {% include 'events/snippets/card.html' with object=obj %}
-    </br>
   {% endfor %}
 {% endblock content %}

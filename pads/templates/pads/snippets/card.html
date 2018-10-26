@@ -1,7 +1,10 @@
-<div class="card">
-  <div class="card text-center">
-    <div class="card-body">
-      <h5 class="card-title">{{ object.name }} @ {{ object.address }} <a href="{{ object.get_absolute_url }}" class="btn btn-primary"<span class="badge">View</span></a></h5>
-    </div>
+{% load static %}
+<div class="card text-center">
+  </br>
+  <img class="card-img-top" src="{% static 'img/frog.jpg' %}" alt="Card image">
+  <div class="card-body text-center">
+    <h4 class="card-title">{{ object }} @ {{ object.address }}</h4>
+    <a href="{{ object.get_absolute_url }}" class="btn btn-default">View</a>
   </div>
+  </br>
 </div>

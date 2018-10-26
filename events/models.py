@@ -25,12 +25,13 @@ class Event(models.Model):
     start           = models.DateTimeField(default=default_start)
     end             = models.DateTimeField(default=default_end)
     pad             = models.ForeignKey('pads.Pad', on_delete=models.CASCADE)
-    title           = models.CharField(max_length=200)
+    title           = models.CharField(max_length=20)
     text            = models.TextField()
     private         = models.BooleanField(default=True)
     active          = models.BooleanField(default=True)
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
+    deleted_at      = models.DateTimeField(null=True)
 
     class Meta:
         ordering = ['start']
@@ -41,6 +42,10 @@ class Event(models.Model):
     def __str__(self):
         return str(self.title)
 
+    def delete(self):
+        self.deleted_at = timezone.now()
+        self.save()
+
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Event._meta.fields]
 
@@ -48,12 +53,22 @@ class Event(models.Model):
         return reverse('events:read', kwargs={'slug': self.slug})
 
     def create_ribbit(self):
-        # Creates a ribbit for the current user
-        return reverse('ribbits:create', kwargs={'event': self.slug})
+        # Creates a ribbit for the current user to the event
+        return reverse('events:create_ribbit', kwargs={'event': self.slug})
 
     def get_attending_list(self):
         attending_list = self.attending.all()
         return Hopper.objects.filter(id__in=attending_list)
+
+    def has_not_started(self):
+        if self.start >= timezone.now():
+            return True
+        return False
+
+    def ended(self):
+        if self.end <= timezone.now:
+            return True
+        return False
 
 def event_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
