@@ -86,7 +86,7 @@ def RibbitFormCreateView(request, *args, **kwargs):
         raise Http404('Error creating ribbit.')
 
 class RibbitDetailSlugView(DetailView):
-    template_name = 'Ribbits/detail.html'
+    template_name = 'ribbits/detail.html'
 
     def get_object(self, *args, **kwargs):
         request = self.request
