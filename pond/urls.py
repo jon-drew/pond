@@ -23,6 +23,8 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.views.generic import TemplateView, CreateView
 
+from graphene_django.views import GraphQLView
+
 from .views import RedirectView
 
 urlpatterns = [
@@ -35,6 +37,7 @@ urlpatterns = [
             form_class=UserCreationForm,
             success_url='/'
     ), name='register'),
+    url(r'^graphql', GraphQLView.as_view(graphiql=True)),
     url(r'^hoppers/', include(('hoppers.urls', 'hoppers'), namespace='hopppers')),
     url(r'^pads/', include(('pads.urls', 'pads'), namespace='pads')),
     url(r'^events/', include(('events.urls', 'events'), namespace='events')),

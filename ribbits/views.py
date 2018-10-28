@@ -109,10 +109,11 @@ class RibbitListView(ListView):
     template_name = 'ribbits/list.html'
 
     def get_queryset(self, *args, **kwargs):
-        hopper = Hopper.objects.get(user=self.request.user.id)
+        request = self.request.user
+        hopper = Hopper.objects.get(user=request.id)
         # Returns list of ribbit objects from hoppers the current user listens to
         public_ribbits = Ribbit.objects.exclude(event__private=1).filter(sent_by__in=hopper.get_listens_to_list())
-        private_ribbits = Ribbit.objects.filter(sent_to=self.request.user.hopper)
+        private_ribbits = Ribbit.objects.filter(sent_to=request.hopper)
         user_ribbits = Ribbit.objects.filter(sent_by=hopper)
         return public_ribbits | private_ribbits | user_ribbits
 

@@ -3,7 +3,7 @@ import datetime
 from django.views.generic import UpdateView, ListView, DetailView
 from django.http import Http404
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.text import slugify
 
 from .models import Event
@@ -68,6 +68,7 @@ class EventDetailSlugView(DetailView):
     def get_object(self, *args, **kwargs):
         request = self.request
         slug = self.kwargs.get('slug')
+        # get_object_or_404(Event, slug=slug)
         try:
             instance = Event.objects.get(slug=slug, active=True)
         except Event.DoesNotExist:
@@ -85,6 +86,16 @@ class EventListView(ListView):
     def get_queryset(self, *args, **kwargs):
         request = self.request
         hopper = Hopper.objects.get(user=request.user)
-        attending = Event.objects.filter(attending=hopper).exclude(start__gte=datetime.datetime.now())
-        created = Event.objects.filter(created_by=hopper).exclude(start__gte=datetime.datetime.now())
+        # Returns list of ribbit objects from hoppers the current user listens to
+        attending = Event.objects.filter(attending=hopper).filter(start__gte=datetime.datetime.now())
+        created = Event.objects.filter(created_by=hopper).filter(start__gte=datetime.datetime.now())
         return attending | created
+
+def EventDeleteView(request, slug):
+    try:
+        event = Event.objects.get(slug=slug)
+        if request.method == "POST" and request.user.hopper == event.created_by:
+            event.delete()
+            return redirect('events:list')
+    except Event.DoesNotExist:
+        raise Http404('You must have a pad to delete an event.')

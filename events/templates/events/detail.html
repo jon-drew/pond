@@ -5,6 +5,7 @@
   {% if object.created_by == request.user.hopper %}
     <div class="text-center">
       <a href="update" class="btn btn-primary"<span class="badge">Update Event</span></a>
+      <a href="delete" class="btn btn-primary"<span class="badge">Delete Event</span></a>
       </br>
       </br>
     </div>
@@ -16,11 +17,8 @@
       <div class="fa fa-calendar-check-o">
         You are attending!
       </div>
-      </br>
-      </br>
     {% endif %}
     <div class="card-body">
-      </br>
       <h1>{{ object.title }}</h1>
       @
       <a href="{{ object.pad.get_absolute_url }}" class="btn btn-default"<span class="badge">{{ object.pad }}</span></a>

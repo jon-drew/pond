@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # GraphQL
+    'graphene_django',
+
     #pond apps
     'hoppers',
     'pads',
@@ -44,6 +47,10 @@ INSTALLED_APPS = [
     'ribbits',
 
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'pond.schema.schema'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
