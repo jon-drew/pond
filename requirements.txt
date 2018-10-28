@@ -4,3 +4,5 @@ Django-Heroku
 gunicorn
 pytz
 setuptools
+graphene-django
+django
