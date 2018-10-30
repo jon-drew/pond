@@ -9,63 +9,69 @@ from pads.models import Pad
 from events.models import Event
 from ribbits.models import Ribbit
 
-class HopperNode(DjangoObjectType):
+class HopperType(DjangoObjectType):
     class Meta:
         model = Hopper
-        interfaces = (Node, )
 
-class PadNode(DjangoObjectType):
+class PadType(DjangoObjectType):
     class Meta:
         model = Pad
-        interfaces = (Node, )
 
-class EventNode(DjangoObjectType):
+class EventType(DjangoObjectType):
     class Meta:
         model = Event
-        interfaces = (Node, )
 
-class RibbitNode(DjangoObjectType):
+class RibbitType(DjangoObjectType):
     class Meta:
         model = Ribbit
-        interfaces = (Node, )
 
 class Query(ObjectType):
-    hopper = Node.Field(HopperNode)
-    all_hoppers = DjangoConnectionField(HopperNode)
+    hopper = graphene.Field(HopperType,id=graphene.Int())
+    all_hoppers = graphene.List(HopperType)
 
-    pad = Node.Field(PadNode)
-    all_pads = DjangoConnectionField(PadNode)
+    pad = graphene.Field(PadType,id=graphene.Int())
+    all_pads = graphene.List(PadType)
 
-    event = Node.Field(EventNode)
-    all_events = DjangoConnectionField(EventNode)
+    event = graphene.Field(EventType,id=graphene.Int())
+    all_events = graphene.List(EventType)
 
-    ribbit = Node.Field(RibbitNode)
-    all_ribbits = DjangoConnectionField(RibbitNode)
+    ribbit = graphene.Field(RibbitType,id=graphene.Int())
+    all_ribbits = graphene.List(RibbitType)
+
+    def resolve_hopper(self, *args, **kwargs):
+        id = kwargs.get('id')
+        if id is not None:
+            return Hopper.objects.get(pk=id)
+        return None
+
+    def resolve_all_hoppers(self, args):
+        return Hopper.objects.all()
+
+    def resolve_pad(self, args):
+        id = kwargs.get('id')
+        if id is not None:
+            return Pad.objects.get(pk=id)
+        return None
+
+    def resolve_all_pads(self, *args, **kwargs):
+        return Pad.objects.all()
+
+    def resolve_event(self, args):
+        id = kwargs.get('id')
+        if id is not None:
+            return Event.objects.get(pk=id)
+        return None
+
+    def resolve_all_events(self, *args, **kwargs):
+        return Event.objects.all()
+
+    def resolve_ribbit(self, args):
+        id = kwargs.get('id')
+        if id is not None:
+            return Ribbit.objects.get(pk=id)
+        return None
+
+    def resolve_all_ribbits(self, *args, **kwargs):
+        return Ribbit.objects.all()
 
 schema = Schema(query=Query)
-
-
-# from graphene import ObjectType, Node, Schema
-# from graphene_django.fields import DjangoConnectionField
-# from graphene_django.types import DjangoObjectType
-
-# class CategoryNode(DjangoObjectType):
-
-#     class Meta:
-#         model = Category
-#         interfaces = (Node, )
-
-# class IngredientNode(DjangoObjectType):
-
-#     class Meta:
-#         model = Ingredient
-#         interfaces = (Node, )
-
-# class Query(ObjectType):
-#     category = Node.Field(CategoryNode)
-#     all_categories = DjangoConnectionField(CategoryNode)
-
-#     ingredient = Node.Field(IngredientNode)
-#     all_ingredients = DjangoConnectionField(IngredientNode)
-
-# schema = Schema(query=Query)
