@@ -38,40 +38,40 @@ class Query(ObjectType):
     ribbit = graphene.Field(RibbitType,id=graphene.Int())
     all_ribbits = graphene.List(RibbitType)
 
-    def resolve_hopper(self, *args, **kwargs):
+    def resolve_hopper(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
             return Hopper.objects.get(pk=id)
         return None
 
-    def resolve_all_hoppers(self, args):
+    def resolve_all_hoppers(self, info, **kwargs):
         return Hopper.objects.all()
 
-    def resolve_pad(self, args):
+    def resolve_pad(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
             return Pad.objects.get(pk=id)
         return None
 
-    def resolve_all_pads(self, *args, **kwargs):
+    def resolve_all_pads(self, info, **kwargs):
         return Pad.objects.all()
 
-    def resolve_event(self, args):
+    def resolve_event(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
             return Event.objects.get(pk=id)
         return None
 
-    def resolve_all_events(self, *args, **kwargs):
+    def resolve_all_events(self, info, **kwargs):
         return Event.objects.all()
 
-    def resolve_ribbit(self, args):
+    def resolve_ribbit(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
             return Ribbit.objects.get(pk=id)
         return None
 
-    def resolve_all_ribbits(self, *args, **kwargs):
+    def resolve_all_ribbits(self, info, **kwargs):
         return Ribbit.objects.all()
 
 schema = Schema(query=Query)
