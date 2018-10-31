@@ -38,6 +38,7 @@ urlpatterns = [
             success_url='/'
     ), name='register'),
     url(r'^graphql', GraphQLView.as_view(graphiql=True)),
+    url(r'^api', GraphQLView.as_view(graphiql=False)),
     url(r'^hoppers/', include(('hoppers.urls', 'hoppers'), namespace='hopppers')),
     url(r'^pads/', include(('pads.urls', 'pads'), namespace='pads')),
     url(r'^events/', include(('events.urls', 'events'), namespace='events')),
