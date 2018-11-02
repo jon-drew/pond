@@ -36,32 +36,6 @@ def EventCreateView(request):
         form = EventCreateForm()
         return render(request, 'events/create_event.html', {'form': form})
 
-def EventUpdateView(request, slug):
-    if request.method == "POST":
-        form = EventUpdateForm(request.POST)
-        if form.is_valid():
-            event = Event.objects.get(slug=slug)
-            form = form.save(commit=False)
-
-            # Assigning form values to event
-            event.start = form.start
-            event.end = form.end
-            event.title = form.title
-            event.text = form.text
-            event.private = form.private
-            event.slug = slugify(form.title + '_' + random_string_generator())
-
-            # The pad is always updated by the current user, at their pad.
-            event.created_by = Hopper.objects.get(user=request.user)
-            event.pad = Pad.objects.get(owner=request.user.hopper)
-            event.save()
-            if event.private == 1:
-                return redirect('ribbits:create_from_form', event=event.slug)
-            return redirect('events:read', event.slug)
-    else:
-        form = EventUpdateForm()
-        return render(request, 'events/update_event.html', {'form': form})
-
 class EventDetailSlugView(DetailView):
     template_name = 'events/detail.html'
 
@@ -87,15 +61,51 @@ class EventListView(ListView):
         request = self.request
         hopper = Hopper.objects.get(user=request.user)
         # Returns list of ribbit objects from hoppers the current user listens to
-        attending = Event.objects.filter(attending=hopper).filter(start__gte=datetime.datetime.now())
-        created = Event.objects.filter(created_by=hopper).filter(start__gte=datetime.datetime.now())
+        attending = Event.objects.filter(attending=hopper).filter(end__gte=datetime.datetime.now()).filter(active=True)
+        created = Event.objects.filter(created_by=hopper).filter(end__gte=datetime.datetime.now()).filter(active=True)
         return attending | created
+
+def EventUpdateView(request, slug):
+    try:
+        event = Event.objects.get(slug=slug)
+        if request.user.hopper != event.created_by:
+            raise Http404('You are not authorized to delete this event.')
+
+        elif request.method == "POST":
+
+            form = EventUpdateForm(request.POST)
+            if form.is_valid():
+                form = form.save(commit=False)
+
+                # Assigning form values to event
+                event.start = form.start
+                event.end = form.end
+                event.title = form.title
+                event.text = form.text
+                event.private = form.private
+                event.slug = slugify(form.title + '_' + random_string_generator())
+
+                # The pad is always updated by the current user, at their pad.
+                event.created_by = Hopper.objects.get(user=request.user)
+                event.pad = Pad.objects.get(owner=request.user.hopper)
+                event.save()
+                if event.private == 1:
+                    return redirect('ribbits:create_from_form', event=event.slug)
+                return redirect('events:read', event.slug)
+        else:
+            form = EventUpdateForm()
+            return render(request, 'events/update_event.html', {'form': form})
+    except Event.DoesNotExist:
+        raise Http404('That event does not exist.')
 
 def EventDeleteView(request, slug):
     try:
         event = Event.objects.get(slug=slug)
-        if request.method == "POST" and request.user.hopper == event.created_by:
-            event.delete()
+        if request.user.hopper != event.created_by:
+            raise Http404('You are not authorized to delete this event.')
+        else:
+            event.active = False
+            event.save()
             return redirect('events:list')
     except Event.DoesNotExist:
-        raise Http404('You must have a pad to delete an event.')
+        raise Http404('That event does not exist.')

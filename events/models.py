@@ -24,14 +24,14 @@ class Event(models.Model):
     attending       = models.ManyToManyField('hoppers.Hopper', related_name='attending')
     start           = models.DateTimeField(default=default_start)
     end             = models.DateTimeField(default=default_end)
-    pad             = models.ForeignKey('pads.Pad', on_delete=models.CASCADE)
+    pad             = models.ForeignKey('pads.Pad', null=True, blank=True, on_delete=models.CASCADE)
     title           = models.CharField(max_length=20)
-    text            = models.TextField(null=True)
+    text            = models.TextField(null=True, blank=True)
     private         = models.BooleanField(default=True)
     active          = models.BooleanField(default=True)
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
-    deleted_at      = models.DateTimeField(null=True)
+    deleted_at      = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ['start']

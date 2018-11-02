@@ -19,9 +19,8 @@ class Hopper(models.Model):
     anonymous       = models.BooleanField(default=True)
     email           = models.EmailField(null=True, max_length=100)
     name            = models.CharField(null=True, max_length=100)
-    birth_date      = models.DateField(null=True)
-    active          = models.BooleanField(default=True)
-    slug            = models.SlugField(null=True, unique=True, editable=False)
+    birth_date      = models.DateField(null=True, blank=True)
+    slug            = models.SlugField(null=True, blank=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
 
     def __repr__(self):

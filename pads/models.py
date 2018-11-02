@@ -22,6 +22,7 @@ class Pad(models.Model):
     active          = models.BooleanField(default=True)
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
+    deleted_at      = models.DateTimeField(null=True, blank=True)
 
     def __repr__(self):
         return str(self.name)

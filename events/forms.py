@@ -7,7 +7,6 @@ class EventCreateForm(ModelForm):
         fields = ['start', 'end', 'title', 'text', 'private']
 
 class EventUpdateForm(ModelForm):
-
     class Meta:
         model = Event
         fields = ['start', 'end', 'title', 'text', 'private']

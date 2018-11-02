@@ -33,11 +33,11 @@ class HopperDetailSlugView(DetailView):
         slug = self.kwargs.get('slug')
         try:
             # Get the hopper instance from the url
-            instance = Hopper.objects.get(slug=slug, active=True)
+            instance = Hopper.objects.get(slug=slug)
         except Hopper.DoesNotExist:
             raise Http404('Hopper does not exist')
         except Hopper.MultipleObjectsReturned:
-            qs = Hopper.objects.filter(slug=slug, active=True)
+            qs = Hopper.objects.filter(slug=slug)
             instance = qs.first()
         except:
             raise Http404('Error in slug view')

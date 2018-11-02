@@ -26,38 +26,6 @@ def PadCreateView(request):
         form = PadCreateForm()
         return render(request, 'pads/create_pad.html', {'form': form})
 
-def PadUpdateView(request):
-    if request.method == "POST":
-        form = PadUpdateForm(request.POST)
-        if form.is_valid():
-            pad = form.save(commit=False)
-            # The pad is always updated by the current user.
-            pad.owner = Hopper.objects.get(user=request.user)
-            pad.save()
-            return redirect('pads:read', pad.slug)
-    else:
-        form = PadUpdateForm()
-        return render(request, 'pads/update_pad.html', {'form': form})
-
-def PadUpdateView(request):
-    try:
-        pad = request.user.hopper.pad
-    except:
-        return Http404('No pad found.')
-
-    try:
-        if request.method == "POST":
-            form = PadUpdateForm(request.POST, instance=pad)
-            if form.is_valid():
-                pad = form.save(commit=False)
-                pad.save()
-                return redirect('pads:read', pad.slug)
-        else:
-            form = PadUpdateForm()
-            return render(request, 'pads/update_pad.html', {'form': form})
-    except:
-        raise Http404('Error in slug view.')
-
 class PadDetailSlugView(DetailView):
     template_name = 'pads/detail.html'
 
@@ -81,4 +49,35 @@ class PadListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        return Pad.objects.all()
+        return Pad.objects.exclude(active=False)
+
+def PadUpdateView(request):
+    try:
+        pad = request.user.hopper.pad
+    except:
+        return Http404('No pad found.')
+
+    try:
+        if request.method == "POST":
+            form = PadUpdateForm(request.POST, instance=pad)
+            if form.is_valid():
+                pad = form.save(commit=False)
+                pad.save()
+                return redirect('pads:read', pad.slug)
+        else:
+            form = PadUpdateForm()
+            return render(request, 'pads/update_pad.html', {'form': form})
+    except:
+        raise Http404('Error in slug view.')
+
+def PadDeleteView(request, slug):
+    try:
+        pad = request.user.hopper.pad
+        if request.user.hopper != pad.owner:
+            raise Http404('You are not authorized to delete this pad.')
+        else:
+            pad.active = False
+            pad.save()
+            return redirect('pads:list')
+    except Pad.DoesNotExist:
+        raise Http404('That pad does not exist.')
