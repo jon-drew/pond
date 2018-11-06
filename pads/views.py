@@ -51,11 +51,11 @@ class PadListView(ListView):
         request = self.request
         return Pad.objects.exclude(active=False)
 
-def PadUpdateView(request):
+def PadUpdateView(request, slug):
     try:
         pad = request.user.hopper.pad
     except:
-        return Http404('No pad found.')
+        return Http404('You do not have a pad to update.')
 
     try:
         if request.method == "POST":
@@ -68,16 +68,17 @@ def PadUpdateView(request):
             form = PadUpdateForm()
             return render(request, 'pads/update_pad.html', {'form': form})
     except:
-        raise Http404('Error in slug view.')
+        raise Http404('Error in update view.')
 
 def PadDeleteView(request, slug):
     try:
         pad = request.user.hopper.pad
-        if request.user.hopper != pad.owner:
-            raise Http404('You are not authorized to delete this pad.')
-        else:
-            pad.active = False
-            pad.save()
-            return redirect('pads:list')
-    except Pad.DoesNotExist:
-        raise Http404('That pad does not exist.')
+    except:
+        return Http404('You do not have a pad to delete.')
+
+    try:
+        pad.active = False
+        pad.save()
+        return redirect('pads:list')
+    except:
+        raise Http404('Error in delete view.')

@@ -20,6 +20,8 @@ class Hopper(models.Model):
     email           = models.EmailField(null=True, max_length=100)
     name            = models.CharField(null=True, max_length=100)
     birth_date      = models.DateField(null=True, blank=True)
+    includes        = models.TextField(null=True, blank=True)
+    excludes        = models.TextField(null=True, blank=True)
     slug            = models.SlugField(null=True, blank=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
 

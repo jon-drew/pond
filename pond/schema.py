@@ -1,8 +1,10 @@
 import graphene
+import graphql_jwt
 
 from graphene import ObjectType, Node, Schema
 from graphene_django.fields import DjangoConnectionField
 from graphene_django.types import DjangoObjectType
+from django.contrib.auth import get_user_model
 
 from hoppers.models import Hopper
 from pads.models import Pad
@@ -24,6 +26,10 @@ class EventType(DjangoObjectType):
 class RibbitType(DjangoObjectType):
     class Meta:
         model = Ribbit
+
+class UserType(DjangoObjectType):
+    class Meta:
+        model = get_user_model()
 
 class Query(ObjectType):
     hopper = graphene.Field(HopperType,id=graphene.Int())
@@ -74,4 +80,9 @@ class Query(ObjectType):
     def resolve_all_ribbits(self, info, **kwargs):
         return Ribbit.objects.all()
 
-schema = Schema(query=Query)
+class Mutation(graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
+
+schema = Schema(query=Query, mutation=Mutation)

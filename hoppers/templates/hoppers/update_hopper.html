@@ -26,6 +26,14 @@
       <div class="form-group">
         {{ form.birth_date }}
       </div>
+      <label for="includes">Use # for topics you like. Try adding your city:</label>
+      <div class="form-group">
+        {{ form.includes }}
+      </div>
+      <label for="excludes">Use ! for topics you don't like:</label>
+      <div class="form-group">
+        {{ form.excludes }}
+      </div>
       <button type="submit" class="btn btn-primary">Update Profile</button>
     </form>
     </br>
