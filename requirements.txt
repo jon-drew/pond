@@ -4,5 +4,6 @@ Django-Heroku
 gunicorn
 pytz
 setuptools
+graphql_jwt
 graphene-django
 django
