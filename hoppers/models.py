@@ -49,6 +49,9 @@ class Hopper(models.Model):
     def add_pair(self):
         return reverse('hoppers:create_pair', kwargs={'slug': self.slug})
 
+    def is_past_delete_date(self):
+        pass
+
 def hopper_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)

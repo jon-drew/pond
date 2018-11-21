@@ -47,11 +47,11 @@ class Query(ObjectType):
     def resolve_hopper(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
-            return Hopper.objects.get(pk=id)
+            return Hopper.objects.get(pk=id).exclude(anonymous=True)
         return None
 
     def resolve_all_hoppers(self, info, **kwargs):
-        return Hopper.objects.all()
+        return Hopper.objects.exclude(anonymous=True)
 
     def resolve_pad(self, info, **kwargs):
         id = kwargs.get('id')

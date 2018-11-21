@@ -2,6 +2,15 @@
 
 {% block content %}
     <div class="text-center">
+      <div>
+        <h4>
+          If you do not fill out the information below then your account will remain anonymous.
+          </br>
+          </br>
+          By filling out your name, email, and birthday, you agree to have that information available
+          <a href="http://www.pondsocial.ca/graphql/?query=query%7B%0A%20%20hopper(id%3A1)%20%7B%0A%20%20%20%20name%0A%20%20%7D%0A%7D">HERE</a>
+        </h4>
+      </div>
       {% if request.user.hopper.get_count_of_listens_to_list == 0 %}
         <a href="/hoppers" class="btn btn-primary"<span class="badge">To Begin Click Here</a>
         </br>
@@ -50,4 +59,3 @@
       </br>
     </div> -->
 {% endblock %}
-
