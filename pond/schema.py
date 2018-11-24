@@ -47,7 +47,9 @@ class Query(ObjectType):
     def resolve_hopper(self, info, **kwargs):
         id = kwargs.get('id')
         if id is not None:
-            return Hopper.objects.get(pk=id).exclude(anonymous=True)
+            hopper_object = Hopper.objects.get(pk=id)
+            if hopper_object.anonymous != True:
+                return Hopper.objects.get(pk=id)
         return None
 
     def resolve_all_hoppers(self, info, **kwargs):
