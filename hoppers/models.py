@@ -35,27 +35,48 @@ class Hopper(models.Model):
             return str(self.name)
 
     def get_fields(self):
+        # Inputs: self
+        # Function: shows field-value pairings for hopper object
+        # Returns: a list of of lists, each containing two strings ['field.name', 'field.value_to_string']
         return [(field.name, field.value_to_string(self)) for field in Hopper._meta.fields]
 
     def get_absolute_url(self):
+        # Inputs: self
+        # Function: provides the read url for the hopper object
+        # Returns: a url associated with the hopper object
         return reverse('hoppers:read', kwargs={'slug': self.slug})
 
     def get_listens_to_list(self):
+        # Inputs: self
+        # Function: find all the other hoppers self is listening to
+        # Returns: a list of hopper objects
         return Hopper.objects.filter(id__in=self.listens_to.all())
 
     def get_count_of_listens_to_list(self):
+        # Inputs: self
+        # Function: counts how many other hoppers self is listening to
+        # Returns: an integer
         return Hopper.objects.filter(id__in=self.listens_to.all()).count()
 
     def add_pair(self):
+        # Inputs: self
+        # Function: creates a new object in the Pairs table
+        # Returns: none
         return reverse('hoppers:create_pair', kwargs={'slug': self.slug})
 
     def is_past_delete_date(self):
+        # TODO: Implement deletion of old accounts.
         pass
 
 def hopper_pre_save_receiver(sender, instance, *args, **kwargs):
+    # Inputs: a hopper object as sender and instance
+    # Function: creates a slug if none exists and sets the accounts anonymous field
+    # Returns: none
     if not instance.slug:
+        # Uses the unique slug generator from pond/utils to create a slug if one does not already exist.
         instance.slug = unique_slug_generator(instance)
     if instance.email and instance.name and instance.birth_date:
+        # A hopper must provide all 3 pieces of information to go from anonymous to public.
         instance.anonymous = False
 
 pre_save.connect(hopper_pre_save_receiver, sender=Hopper)

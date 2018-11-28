@@ -32,6 +32,9 @@ class UserType(DjangoObjectType):
         model = get_user_model()
 
 class Query(ObjectType):
+
+    # Contains all GraphQL queries that return data from the API.
+
     hopper = graphene.Field(HopperType,id=graphene.Int())
     all_hoppers = graphene.List(HopperType)
 
@@ -45,44 +48,72 @@ class Query(ObjectType):
     all_ribbits = graphene.List(RibbitType)
 
     def resolve_hopper(self, info, **kwargs):
+        # Inputs: a valid id value for a hopper
+        # Function: validates the hopper exists and is not anonymous
+        # Returns: a hopper object or none
         id = kwargs.get('id')
         if id is not None:
             hopper_object = Hopper.objects.get(pk=id)
+            # Returns none for anonymous hoppers.
             if hopper_object.anonymous != True:
                 return Hopper.objects.get(pk=id)
         return None
 
     def resolve_all_hoppers(self, info, **kwargs):
+        # Inputs: none
+        # Function: none
+        # Returns: a list containing all non-anonymous hopper objects
         return Hopper.objects.exclude(anonymous=True)
 
     def resolve_pad(self, info, **kwargs):
+        # Inputs: a valid id value for a pad
+        # Function: validates the pad
+        # Returns: a pad object or none
         id = kwargs.get('id')
         if id is not None:
             return Pad.objects.get(pk=id)
         return None
 
     def resolve_all_pads(self, info, **kwargs):
+        # Inputs: none
+        # Function: none
+        # Returns: a list containing all pad objects
         return Pad.objects.all()
 
     def resolve_event(self, info, **kwargs):
+        # Inputs: a valid id value for an event
+        # Function: validates the event
+        # Returns: an event object or none
         id = kwargs.get('id')
         if id is not None:
             return Event.objects.get(pk=id)
         return None
 
     def resolve_all_events(self, info, **kwargs):
+        # Inputs: none
+        # Function: none
+        # Returns: a list containing all event objects
         return Event.objects.all()
 
     def resolve_ribbit(self, info, **kwargs):
+        # Inputs: a valid id value for a ribbit
+        # Function: validates the ribbit
+        # Returns: an ribbit object or none
         id = kwargs.get('id')
         if id is not None:
             return Ribbit.objects.get(pk=id)
         return None
 
     def resolve_all_ribbits(self, info, **kwargs):
+        # Inputs: none
+        # Function: none
+        # Returns: a list containing all ribbit objects
         return Ribbit.objects.all()
 
 class Mutation(graphene.ObjectType):
+
+    # Contains all GraphQL mutations that send data to the API.
+
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()

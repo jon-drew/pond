@@ -7,6 +7,9 @@ from .models import Hopper, Pair
 from .forms import HopperUpdateForm
 
 def HopperUpdateView(request):
+    # Inputs: an HTTP request
+    # Function: processes a POST request to the hopper 'update' url
+    # Returns: a redirect to the hopper 'read' url or HTTP404 error
     try:
         hopper = request.user.hopper
     except UserProfile.DoesNotExist:
@@ -29,6 +32,9 @@ class HopperDetailSlugView(DetailView):
     template_name = 'hoppers/detail.html'
 
     def get_object(self, *args, **kwargs):
+        # Inputs: a GET request
+        # Function: show the 'read' view for a hopper instance
+        # Returns: a redirect to the hopper 'read' url or HTTP404 error
         request = self.request
         slug = self.kwargs.get('slug')
         try:
@@ -48,11 +54,17 @@ class HopperListView(ListView):
     template_name = 'hoppers/list.html'
 
     def get_queryset(self, *args, **kwargs):
+        # Inputs: an GET request
+        # Function: show a list of all the hoppers the current user doesn't already listen to
+        # Returns: a redirect to the hopper 'list' url
         hopper = Hopper.objects.get(user=self.request.user.id)
-        #return Hopper.objects.exclude(id=hopper.id).exclude(id__in=hopper.get_listens_to_list())
         return Hopper.objects.exclude(id=hopper.id).exclude(id__in=self.request.user.hopper.listens_to.all())
+        #return Hopper.objects.exclude(id=hopper.id).exclude(id__in=hopper.get_listens_to_list())
 
 def PairCreateView(request, *args, **kwargs):
+    # Inputs: an HTTP request
+    # Function: processes a POST request to the hopper 'create_pair' url
+    # Returns: a redirect to the pond 'login' url or HTTP404 error
     try:
         if request.user.is_authenticated:
             # Create new pairing
@@ -70,7 +82,9 @@ def PairCreateView(request, *args, **kwargs):
         raise Http404('Error adding pairing.')
 
 def LoginRedirectView(request):
-    """Redirector to figure out where the user goes next."""
+    # Inputs: an HTTP request
+    # Function: processes a POST request to the pond 'login' url
+    # Returns: a redirect to the hopper 'update' url if the user is anonymous or to the ribbit 'list' url if they are public
     is_anonymous = Hopper.objects.get(user=request.user).anonymous
     if is_anonymous == 1:
         return redirect('hoppers:update')
