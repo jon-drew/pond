@@ -6,7 +6,19 @@
   <h2 class="text-center">Register</h2>
   <form method="post" class="text-center" >
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+        <br/>
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
     <button type="submit" class="btn btn-primary">Register</button>
   </form>
 {% endblock %}

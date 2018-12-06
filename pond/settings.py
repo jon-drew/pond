@@ -111,8 +111,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
-
-
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'hoppers:login_redirect'
 LOGOUT_REDIRECT_URL = '/login'
 
@@ -139,6 +139,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static_project"),
 ]
+
+# Testing
+FIXTURE_DIRS = (
+   os.path.join(BASE_DIR, "fixtures"),
+)
 
 # if DEBUG == False:
 #     AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
