@@ -61,7 +61,7 @@ class Query(ObjectType):
 
     def resolve_all_hoppers(self, info, **kwargs):
         # Inputs: none
-        # Function: none
+        # Function: filter for privacy
         # Returns: a list containing all non-anonymous hopper objects
         return Hopper.objects.exclude(anonymous=True)
 
