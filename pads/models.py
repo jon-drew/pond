@@ -14,6 +14,8 @@ from django.utils import timezone
 from events.models import Event
 from hoppers.models import Hopper
 
+from cloudinary.models import CloudinaryField
+
 class Pad(models.Model):
     name            = models.CharField(max_length=20)
     address         = models.CharField(max_length=100)
@@ -23,6 +25,8 @@ class Pad(models.Model):
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
     deleted_at      = models.DateTimeField(null=True, blank=True)
+    image           = CloudinaryField('image', null=True, blank=True)
+    caption         = models.CharField(max_length=100, null=True, blank=True)
 
     def __repr__(self):
         return str(self.name)

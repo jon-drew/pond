@@ -16,6 +16,14 @@
         <h2 class="card-title">{{ object.name }}</h2>
         <h3>{{ object.address }}</h3>
         </br>
+        {% load cloudinary %}
+        {% cloudinary object.image.public_id className="pad-pic" height=200 width=150 %}
+        </br>
+        {% if object.caption %}
+          <div>{{ object.caption }}</div>
+          </br>
+        {% endif %}
+        </br>
         <div>{{ object.description }}</div>
         </br>
         <div>Events:</div>

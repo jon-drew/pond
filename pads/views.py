@@ -59,7 +59,7 @@ def PadUpdateView(request, slug):
 
     try:
         if request.method == "POST":
-            form = PadUpdateForm(request.POST, instance=pad)
+            form = PadUpdateForm(request.POST, request.FILES, instance=pad)
             if form.is_valid():
                 pad = form.save(commit=False)
                 pad.save()

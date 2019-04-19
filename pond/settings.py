@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 import django_heroku
+import cloudinary
 # import storages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -48,8 +49,17 @@ INSTALLED_APPS = [
     'graphene_django',
 
     # File uploads
+    'cloudinary'
     # 'storages'
 ]
+
+# Cloudinary config
+cloudinary.config(
+  cloud_name = "dagmrprxv",
+  api_key = "614959912942865",
+  api_secret = "2F-7jZsZroJLgxpuC9eTvZYrrpE"
+)
+
 
 GRAPHENE = {
     'SCHEMA': 'pond.schema.schema',
@@ -144,6 +154,9 @@ STATICFILES_DIRS = [
 FIXTURE_DIRS = (
    os.path.join(BASE_DIR, "fixtures"),
 )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # if DEBUG == False:
 #     AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
