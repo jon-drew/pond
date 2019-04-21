@@ -72,8 +72,7 @@ def EventUpdateView(request, slug):
             raise Http404('You are not authorized to delete this event.')
 
         elif request.method == "POST":
-
-            form = EventUpdateForm(request.POST)
+            form = EventUpdateForm(request.POST, request.FILES)
             if form.is_valid():
                 form = form.save(commit=False)
 
@@ -83,6 +82,8 @@ def EventUpdateView(request, slug):
                 event.title = form.title
                 event.text = form.text
                 event.private = form.private
+                event.image = form.image
+                event.caption = form.caption
                 event.slug = slugify(form.title + '_' + random_string_generator())
 
                 # The pad is always updated by the current user, at their pad.

@@ -1,5 +1,4 @@
 from .models import Pad
-
 from django.forms import ModelForm
 
 class PadCreateForm(ModelForm):

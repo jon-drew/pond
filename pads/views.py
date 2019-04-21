@@ -12,7 +12,7 @@ from .forms import PadCreateForm, PadUpdateForm
 def PadCreateView(request):
     if request.method == "POST":
         try:
-            form = PadCreateForm(request.POST)
+            form = PadCreateForm(request.POST, request.FILES)
             if form.is_valid():
                 pad = form.save(commit=False)
                 # The pad is always created by the current user.

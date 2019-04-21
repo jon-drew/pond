@@ -28,6 +28,15 @@
       </br>
       Ends: {{ object.end|date:"D, M d, fA" }}
       </br>
+      {% load cloudinary %}
+      {% if object.image %}
+        {% cloudinary object.image.public_id className="event-pic" height=200 width=150 %}
+        </br>
+      {% endif %}
+      {% if object.caption %}
+        <div>{{ object.caption }}</div>
+        </br>
+      {% endif %}
       </br>
       {{ object.text }}
       </br>

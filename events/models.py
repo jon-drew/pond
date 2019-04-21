@@ -13,6 +13,8 @@ from django.utils import timezone
 
 from hoppers.models import Hopper
 
+from cloudinary.models import CloudinaryField
+
 def default_start():
   return timezone.now() + timezone.timedelta(days=1)
 
@@ -32,6 +34,8 @@ class Event(models.Model):
     slug            = models.SlugField(null=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
     deleted_at      = models.DateTimeField(null=True, blank=True)
+    image           = CloudinaryField('image', null=True, blank=True)
+    caption         = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         ordering = ['start']
