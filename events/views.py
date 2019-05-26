@@ -16,16 +16,14 @@ from pond.utils import random_string_generator
 
 def EventCreateView(request):
     if request.method == "POST":
-        form = EventCreateForm(request.POST)
+        form = EventCreateForm(request.POST, request.FILES)
         if form.is_valid():
             event = form.save(commit=False)
-
-            # The event is always created by the current user, at their pad.
-            created_by = Hopper.objects.get(user=request.user)
-            event.created_by = created_by
-
+            # The event is always created by the current user.
+            event.created_by = Hopper.objects.get(user=request.user)
             try:
-                event.pad = Pad.objects.get(owner=created_by)
+                # Events are created at the current user's pad.
+                event.pad = Pad.objects.get(owner=Hopper.objects.get(user=request.user))
                 event.save()
                 if event.private == 1:
                     return redirect('ribbits:create_from_form', event=event.slug)
@@ -69,26 +67,14 @@ def EventUpdateView(request, slug):
     try:
         event = Event.objects.get(slug=slug)
         if request.user.hopper != event.created_by:
-            raise Http404('You are not authorized to delete this event.')
-
+            raise Http404('You are not authorized to update this event.')
         elif request.method == "POST":
-            form = EventUpdateForm(request.POST, request.FILES)
+            form = EventUpdateForm(request.POST, request.FILES, instance=event)
             if form.is_valid():
-                form = form.save(commit=False)
-
-                # Assigning form values to event
-                event.start = form.start
-                event.end = form.end
-                event.title = form.title
-                event.text = form.text
-                event.private = form.private
-                event.image = form.image
-                event.caption = form.caption
-                event.slug = slugify(form.title + '_' + random_string_generator())
-
-                # The pad is always updated by the current user, at their pad.
+                event = form.save(commit=False)
+                # event.image = cloudinary.uploader.upload(request.FILES)
+                # The pad is always updated by the current user.
                 event.created_by = Hopper.objects.get(user=request.user)
-                event.pad = Pad.objects.get(owner=request.user.hopper)
                 event.save()
                 if event.private == 1:
                     return redirect('ribbits:create_from_form', event=event.slug)
@@ -96,8 +82,8 @@ def EventUpdateView(request, slug):
         else:
             form = EventUpdateForm()
             return render(request, 'events/update_event.html', {'form': form})
-    except Event.DoesNotExist:
-        raise Http404('That event does not exist.')
+    except:
+        raise Http404('Error in update view.')
 
 def EventDeleteView(request, slug):
     try:

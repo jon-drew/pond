@@ -9,19 +9,23 @@ from hoppers.models import Hopper
 
 from .forms import PadCreateForm, PadUpdateForm
 
+import cloudinary.uploader
+
 def PadCreateView(request):
     if request.method == "POST":
         try:
             form = PadCreateForm(request.POST, request.FILES)
             if form.is_valid():
                 pad = form.save(commit=False)
+                pad.image = cloudinary.uploader.upload(request.FILES)
                 # The pad is always created by the current user.
                 pad.owner = Hopper.objects.get(user=request.user)
                 pad.save()
                 return redirect('pads:read', pad.slug)
         except IntegrityError:
             return Http404('One pad per user.')
-
+        except:
+            raise Http404('Error in create view.')
     else:
         form = PadCreateForm()
         return render(request, 'pads/create_pad.html', {'form': form})
@@ -62,6 +66,7 @@ def PadUpdateView(request, slug):
             form = PadUpdateForm(request.POST, request.FILES, instance=pad)
             if form.is_valid():
                 pad = form.save(commit=False)
+                pad.image = cloudinary.uploader.upload(request.FILES)
                 pad.save()
                 return redirect('pads:read', pad.slug)
         else:

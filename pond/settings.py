@@ -27,7 +27,7 @@ SECRET_KEY = '$c*q7u)g7+3f83nl%#tpl_f*(hs&fb9dzz6oq&&rk91^#_g$vp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'pondsocial.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'pondsocial.herokuapp.com', 'pondsocial.ca']
 
 # Application definition
 
@@ -48,17 +48,9 @@ INSTALLED_APPS = [
     # GraphQL
     'graphene_django',
 
-    # File uploads
+    # image uploads
     'cloudinary'
-    # 'storages'
 ]
-
-# Cloudinary config
-cloudinary.config(
-  cloud_name = "dagmrprxv",
-  api_key = "614959912942865",
-  api_secret = "2F-7jZsZroJLgxpuC9eTvZYrrpE"
-)
 
 
 GRAPHENE = {

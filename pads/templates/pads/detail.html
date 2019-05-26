@@ -26,6 +26,8 @@
         {% endif %}
         <div>{{ object.description }}</div>
         </br>
+        Events:
+        </br>
         {% for event in object.get_events_list %}
           <a href="{{ event.get_absolute_url }}" class="btn btn-default"<span class="badge">{{ event }}</span></a>
         {% endfor %}
