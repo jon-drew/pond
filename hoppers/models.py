@@ -24,6 +24,7 @@ class Hopper(models.Model):
     excludes        = models.TextField(null=True, blank=True)
     slug            = models.SlugField(null=True, blank=True, unique=True, editable=False)
     created_at      = models.DateTimeField(default=timezone.now)
+    image           = models.ImageField(null=True, blank=True)
 
     def __repr__(self):
         return str(self.user.username)

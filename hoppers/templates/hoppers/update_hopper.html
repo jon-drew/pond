@@ -4,7 +4,7 @@
     <div class="text-center">
       <div>
         <h4>
-          If you do not fill out the information below then your account will remain anonymous.
+          Hello, {{ request.user.username }}. If you do not fill out the information below then your account will remain anonymous.
           </br>
           </br>
           By filling out your name, email, and birthday, you agree to have that information available
@@ -34,6 +34,10 @@
       <label for="birth_date">Birthday:</label>
       <div class="form-group">
         {{ form.birth_date }}
+      </div>
+      <label for="image">Birthday:</label>
+      <div class="form-group">
+        {{ form.image }}
       </div>
 <!--       <label for="includes">Use # for topics you like. Try adding your city:</label>
       <div class="form-group">
