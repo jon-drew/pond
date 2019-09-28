@@ -8,4 +8,4 @@ class HopperUpdateForm(ModelForm):
 
     class Meta:
         model = Hopper
-        fields = ['name', 'email', 'birth_date', 'includes', 'excludes']
+        fields = ['name', 'email', 'birth_date', 'includes', 'excludes', 'image']
