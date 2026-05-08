@@ -11,6 +11,7 @@ export default function RegisterPage() {
   const [, register] = useMutation(REGISTER_MUTATION);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -27,8 +28,8 @@ export default function RegisterPage() {
       setError(result.error.graphQLErrors[0]?.message ?? result.error.message);
       return;
     }
-    router.push('/settings');
-    router.refresh();
+    setSuccess(true);
+    setTimeout(() => router.push('/login'), 1500);
   }
 
   return (
@@ -40,6 +41,9 @@ export default function RegisterPage() {
         </div>
         {error && (
           <p className="text-sm text-red-600 bg-red-50 rounded px-3 py-2">{error}</p>
+        )}
+        {success && (
+          <p className="text-sm text-green-700 bg-green-50 rounded px-3 py-2">Account created! Redirecting to login…</p>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
