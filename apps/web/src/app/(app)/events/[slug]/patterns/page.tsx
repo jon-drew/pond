@@ -16,20 +16,21 @@ interface PatternNode {
   score: number;
 }
 
-export default async function PatternsPage({ params }: { params: { slug: string } }) {
+export default async function PatternsPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const client = await makeServerClient();
   const [meResult, eventResult] = await Promise.all([
     client.query(ME_QUERY, {}),
-    client.query(EVENT_QUERY, { slug: params.slug }),
+    client.query(EVENT_QUERY, { slug }),
   ]);
 
   const me = meResult.data?.me;
   const event = eventResult.data?.event;
 
   if (!event) return redirect(`/events`);
-  if (!me || me.id !== event.createdBy?.id) return redirect(`/events/${params.slug}`);
+  if (!me || me.id !== event.createdBy?.id) return redirect(`/events/${slug}`);
 
-  const patternResult = await client.query(EVENT_RIBBIT_PATTERN_QUERY, { eventSlug: params.slug });
+  const patternResult = await client.query(EVENT_RIBBIT_PATTERN_QUERY, { eventSlug: slug });
   const nodes = patternResult.data?.eventRibbitPattern ?? [];
 
   const byTime = [...nodes as PatternNode[]].sort(
@@ -41,7 +42,7 @@ export default async function PatternsPage({ params }: { params: { slug: string 
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <Link href={`/events/${params.slug}`} className="text-sm text-gray-400 hover:text-pond-600">← {event.title}</Link>
+          <Link href={`/events/${slug}`} className="text-sm text-gray-400 hover:text-pond-600">← {event.title}</Link>
           <h1 className="text-xl font-bold mt-1">Ribbit Patterns</h1>
           <p className="text-sm text-gray-500">{nodes.length} Ribbits · {nodes.filter((n: PatternNode) => n.parentSlug !== null).length} echoes</p>
         </div>

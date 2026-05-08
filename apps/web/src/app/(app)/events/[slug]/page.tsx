@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useQuery, useMutation } from 'urql';
 import { EVENT_QUERY } from '@/gql/events';
 import { ME_QUERY } from '@/gql/hoppers';
@@ -10,8 +11,9 @@ import { RibbitCard } from '@/components/ribbits/ribbit-card';
 import { format } from 'date-fns';
 import Link from 'next/link';
 
-export default function EventDetailPage({ params }: { params: { slug: string } }) {
-  const [eventResult, refetchEvent] = useQuery({ query: EVENT_QUERY, variables: { slug: params.slug } });
+export default function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = React.use(params);
+  const [eventResult, refetchEvent] = useQuery({ query: EVENT_QUERY, variables: { slug } });
   const [meResult] = useQuery({ query: ME_QUERY });
   const [ribbitsResult] = useQuery({ query: RIBBITS_QUERY });
   const [, rsvp] = useMutation(RSVP_EVENT_MUTATION);
@@ -20,7 +22,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
   const event = eventResult.data?.event;
   const me = meResult.data?.me;
   const allRibbits = ribbitsResult.data?.ribbits ?? [];
-  const eventRibbits = allRibbits.filter((r: { event: { slug: string } }) => r.event.slug === params.slug);
+  const eventRibbits = allRibbits.filter((r: { event: { slug: string } }) => r.event.slug === slug);
 
   if (eventResult.fetching) return <p className="text-gray-400">Loading…</p>;
   if (!event) return <p className="text-gray-500">Event not found.</p>;
@@ -58,7 +60,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
             {isAttending ? '✓ Attending (cancel)' : 'RSVP / Ribbit'}
           </button>
           {isOwner && (
-            <Link href={`/events/${params.slug}/patterns`}
+            <Link href={`/events/${slug}/patterns`}
               className="px-4 py-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors"
             >
               📊 View Patterns

@@ -3,9 +3,10 @@ import { PAD_QUERY } from '@/gql/pads';
 import { EVENTS_QUERY } from '@/gql/events';
 import Link from 'next/link';
 
-export default async function PadDetailPage({ params }: { params: { slug: string } }) {
+export default async function PadDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const client = await makeServerClient();
-  const result = await client.query(PAD_QUERY, { slug: params.slug });
+  const result = await client.query(PAD_QUERY, { slug });
   const pad = result.data?.pad;
 
   if (!pad) return <p className="text-gray-500">Pad not found.</p>;

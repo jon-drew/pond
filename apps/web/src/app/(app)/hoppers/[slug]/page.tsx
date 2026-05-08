@@ -1,11 +1,13 @@
 'use client';
 
+import React from 'react';
 import { useQuery, useMutation } from 'urql';
 import { HOPPER_QUERY, ME_QUERY, FOLLOW_HOPPER_MUTATION } from '@/gql/hoppers';
 import { cn } from '@/lib/utils';
 
-export default function HopperDetailPage({ params }: { params: { slug: string } }) {
-  const [hopperResult] = useQuery({ query: HOPPER_QUERY, variables: { slug: params.slug } });
+export default function HopperDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = React.use(params);
+  const [hopperResult] = useQuery({ query: HOPPER_QUERY, variables: { slug } });
   const [meResult] = useQuery({ query: ME_QUERY });
   const [, follow] = useMutation(FOLLOW_HOPPER_MUTATION);
 
