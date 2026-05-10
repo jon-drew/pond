@@ -1,0 +1,10 @@
+Django==5.1.*
+strawberry-graphql-django==0.47.*
+psycopg[binary]==3.*
+python-decouple==3.*
+dj-database-url==2.*
+gunicorn==23.*
+whitenoise==6.*
+PyJWT==2.*
+django-cors-headers==4.*
+Pillow==11.*
