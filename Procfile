@@ -1,1 +1,0 @@
-web: gunicorn pond.wsgi --log-file -
