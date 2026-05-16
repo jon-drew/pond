@@ -15,7 +15,7 @@ const REFRESH_MUTATION = `
 
 function makeClient() {
   return createClient({
-    url: process.env.NEXT_PUBLIC_API_URL!,
+    url: '/api/graphql',
     fetchOptions: { credentials: 'include' },
     exchanges: [
       cacheExchange,
