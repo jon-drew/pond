@@ -12,16 +12,35 @@ export async function POST(req: NextRequest) {
 
   const target = API_URL.endsWith('/graphql/') ? API_URL : `${API_URL.replace(/\/$/, '')}/graphql/`;
 
-  const djangoRes = await fetch(target, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Cookie: req.headers.get('cookie') ?? '',
-    },
-    body: await req.text(),
-  });
+  let djangoRes: Response;
+  try {
+    djangoRes = await fetch(target, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: req.headers.get('cookie') ?? '',
+      },
+      body: await req.text(),
+    });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return NextResponse.json(
+      { errors: [{ message: `API unreachable [fetch-failed:${msg}]` }] },
+      { status: 503 },
+    );
+  }
 
   const data = await djangoRes.text();
+
+  // If Django returned non-JSON (e.g. an HTML error page), surface it clearly
+  const isJson = djangoRes.headers.get('content-type')?.includes('application/json');
+  if (!isJson) {
+    return NextResponse.json(
+      { errors: [{ message: `API returned non-JSON [status:${djangoRes.status}]` }] },
+      { status: 502 },
+    );
+  }
+
   const res = new NextResponse(data, {
     status: djangoRes.status,
     headers: { 'Content-Type': 'application/json' },
