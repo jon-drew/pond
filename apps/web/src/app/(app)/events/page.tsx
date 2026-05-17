@@ -36,7 +36,13 @@ export default async function EventsPage() {
             </div>
           </Link>
         ))}
-        {events.length === 0 && <p className="text-green-700 text-sm">No events yet.</p>}
+        {events.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-5xl mb-4">🌿</p>
+            <p className="text-green-400 font-medium mb-1">No events in the pond yet</p>
+            <p className="text-green-700 text-sm">Be the first to host a gathering!</p>
+          </div>
+        )}
       </div>
     </div>
   );

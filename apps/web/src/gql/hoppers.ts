@@ -20,7 +20,7 @@ export const HOPPERS_QUERY = `
 
 export const HOPPER_QUERY = `
   query Hopper($slug: String!) {
-    hopper(slug: $slug) { ...HopperFields }
+    hopper(slug: $slug) { ...HopperFields isFollowedByMe }
   }
   ${HOPPER_FRAGMENT}
 `;

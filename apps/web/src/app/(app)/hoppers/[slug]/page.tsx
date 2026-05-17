@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from 'urql';
 import { HOPPER_QUERY, ME_QUERY, FOLLOW_HOPPER_MUTATION, HOPPER_EVENTS_QUERY } from '@/gql/hoppers';
 import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
 
 export default function HopperDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
@@ -18,10 +17,24 @@ export default function HopperDetailPage({ params }: { params: Promise<{ slug: s
   const events: Array<{ id: string; title: string; text: string; start: string; slug: string; private: boolean; pad: { name: string; slug: string } | null }> =
     eventsResult.data?.hopperEvents ?? [];
 
+  const [following, setFollowing] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (hopper?.isFollowedByMe !== undefined) {
+      setFollowing(hopper.isFollowedByMe);
+    }
+  }, [hopper?.isFollowedByMe]);
+
   if (hopperResult.fetching) return <p className="text-green-700">Loading…</p>;
   if (!hopper) return <p className="text-green-700">Hopper not found.</p>;
 
   const isMe = me?.id === hopper.id;
+
+  async function handleFollowToggle() {
+    const next = !following;
+    setFollowing(next);
+    await follow({ slug: hopper.slug });
+  }
 
   return (
     <div className="space-y-4">
@@ -35,10 +48,14 @@ export default function HopperDetailPage({ params }: { params: Promise<{ slug: s
         </div>
         {!isMe && me && (
           <button
-            onClick={() => follow({ slug: hopper.slug })}
-            className="px-4 py-2 bg-green-700 hover:bg-green-600 text-black text-sm rounded-lg transition-colors"
+            onClick={handleFollowToggle}
+            className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+              following
+                ? 'bg-green-900 border border-green-600 text-green-300 hover:bg-red-900 hover:border-red-600 hover:text-red-300'
+                : 'bg-green-700 hover:bg-green-600 text-black'
+            }`}
           >
-            Follow / Unfollow
+            {following ? 'Hopping ✓' : 'Hop to'}
           </button>
         )}
       </div>
@@ -64,7 +81,10 @@ export default function HopperDetailPage({ params }: { params: Promise<{ slug: s
           </a>
         ))}
         {!eventsResult.fetching && events.length === 0 && (
-          <p className="text-green-700 text-sm">No events ribbited yet.</p>
+          <div className="text-center py-8">
+            <p className="text-3xl mb-2">🐸</p>
+            <p className="text-green-700 text-sm">No events ribbited yet.</p>
+          </div>
         )}
       </div>
     </div>
