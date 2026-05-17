@@ -21,19 +21,19 @@ function TreeNode({ node, allNodes, level = 0 }: { node: PatternNode; allNodes: 
   const children = allNodes.filter((n) => n.parentSlug === node.ribbit.slug);
 
   return (
-    <div className="border-l-2 border-pond-100 pl-3 mt-2">
-      <div className="bg-white rounded-lg border border-gray-100 p-3 space-y-1">
+    <div className="border-l-2 border-green-900 pl-3 mt-2">
+      <div className="bg-black rounded-lg border border-green-900 p-3 space-y-1">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
             <span className="text-base">🐸</span>
-            <a href={`/hoppers/${node.ribbit.sentBy.slug}`} className="font-medium hover:text-pond-700">
+            <a href={`/hoppers/${node.ribbit.sentBy.slug}`} className="font-medium hover:text-green-400">
               {node.ribbit.sentBy.username}
             </a>
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-green-700">
               {formatDistanceToNow(new Date(node.ribbit.createdAt), { addSuffix: true })}
             </span>
           </div>
-          <div className="flex items-center gap-3 text-xs text-gray-500">
+          <div className="flex items-center gap-3 text-xs text-green-700">
             <span>Score: {node.score}</span>
             <span>Direct echoes: {node.directEchoCount}</span>
             <span>Total reach: {node.totalEchoCount}</span>
@@ -42,7 +42,7 @@ function TreeNode({ node, allNodes, level = 0 }: { node: PatternNode; allNodes: 
         {node.directEchoCount > 0 && (
           <button
             onClick={() => setExpanded(!expanded)}
-            className="text-xs text-pond-600 hover:underline"
+            className="text-xs text-green-400 hover:underline"
           >
             {expanded ? '▾ Hide' : '▸ Show'} {node.directEchoCount} echo{node.directEchoCount !== 1 ? 's' : ''}
           </button>
@@ -63,7 +63,7 @@ export function RibbitPatternTree({ nodes }: { nodes: PatternNode[] }) {
         <TreeNode key={node.ribbit.id} node={node} allNodes={nodes} level={0} />
       ))}
       {roots.length === 0 && (
-        <p className="text-gray-400 text-sm">No Ribbits yet for this event.</p>
+        <p className="text-green-700 text-sm">No Ribbits yet for this event.</p>
       )}
     </div>
   );

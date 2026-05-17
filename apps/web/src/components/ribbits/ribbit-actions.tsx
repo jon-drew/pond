@@ -24,18 +24,18 @@ export function RibbitActions({ slug, likeCount, spotCount, echoCount, myId, lik
   const spotted = spottedBy.some((h) => h.id === myId);
 
   return (
-    <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+    <div className="flex items-center gap-4 mt-2 text-sm text-green-700">
       <button
         onClick={() => like({ slug })}
         disabled={likeResult.fetching}
-        className={cn('flex items-center gap-1 hover:text-pond-600 transition-colors', liked && 'text-pond-600 font-medium')}
+        className={cn('flex items-center gap-1 hover:text-green-400 transition-colors', liked && 'text-green-400 font-medium')}
       >
         👍 {likeCount}
       </button>
       <button
         onClick={() => spot({ slug })}
         disabled={spotResult.fetching}
-        className={cn('flex items-center gap-1 hover:text-yellow-500 transition-colors', spotted && 'text-yellow-500 font-medium')}
+        className={cn('flex items-center gap-1 hover:text-yellow-400 transition-colors', spotted && 'text-yellow-400 font-medium')}
       >
         🔦 {spotCount}
       </button>
@@ -43,7 +43,7 @@ export function RibbitActions({ slug, likeCount, spotCount, echoCount, myId, lik
         <button
           onClick={() => echo({ slug })}
           disabled={echoResult.fetching}
-          className="flex items-center gap-1 hover:text-blue-500 transition-colors"
+          className="flex items-center gap-1 hover:text-blue-400 transition-colors"
         >
           🔁 Echo ({echoCount})
         </button>

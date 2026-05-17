@@ -1,14 +1,157 @@
 body {
   padding-top: 5em;
+  background-color: #000;
+  color: #86efac;
 }
 
 .container {
   width: 100%;
 }
 
+/* Cards */
 .card {
-  background-color: rgb(132, 193, 56);
-  border-radius: 5em;
-  color: white;
+  background-color: #000;
+  border: 1px solid #166534;
+  border-radius: 0.75rem;
+  color: #86efac;
   margin-bottom: 1em;
+  padding: 1rem;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #4ade80;
+}
+
+/* Links */
+a, a:visited {
+  color: #4ade80;
+}
+a:hover, a:focus {
+  color: #86efac;
+  text-decoration: none;
+}
+
+/* Labels */
+label {
+  color: #4ade80;
+}
+
+/* Form controls */
+.form-control {
+  background-color: #000;
+  border: 1px solid #166534;
+  color: #86efac;
+  border-radius: 0.5rem;
+}
+.form-control:focus {
+  background-color: #000;
+  border-color: #16a34a;
+  color: #86efac;
+  box-shadow: 0 0 0 0.15rem rgba(22, 163, 74, 0.35);
+}
+.form-control::placeholder {
+  color: #14532d;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #15803d;
+  border-color: #166534;
+  color: #000;
+  border-radius: 0.5rem;
+  font-weight: 500;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: #16a34a;
+  border-color: #15803d;
+  color: #000;
+}
+
+.btn-default {
+  background-color: #000;
+  border-color: #166534;
+  color: #4ade80;
+  border-radius: 0.5rem;
+}
+.btn-default:hover, .btn-default:focus, .btn-default:active {
+  background-color: #052e16;
+  border-color: #16a34a;
+  color: #86efac;
+}
+
+/* Panels */
+.panel {
+  background-color: #000;
+  border-color: #166534;
+}
+.panel-heading {
+  background-color: #052e16;
+  border-color: #166534;
+  color: #4ade80;
+}
+.panel-body {
+  color: #86efac;
+}
+
+/* Wells */
+.well {
+  background-color: #052e16;
+  border-color: #166534;
+  color: #86efac;
+}
+
+/* List groups */
+.list-group-item {
+  background-color: #000;
+  border-color: #166534;
+  color: #86efac;
+}
+.list-group-item:hover {
+  background-color: #052e16;
+  color: #4ade80;
+}
+
+/* Alerts */
+.alert-success {
+  background-color: #052e16;
+  border-color: #166534;
+  color: #4ade80;
+}
+.alert-danger, .alert-error {
+  background-color: #450a0a;
+  border-color: #7f1d1d;
+  color: #f87171;
+}
+.alert-warning {
+  background-color: #422006;
+  border-color: #713f12;
+  color: #fbbf24;
+}
+
+/* Help/muted text */
+.help-block, .text-muted, small {
+  color: #15803d !important;
+}
+
+/* Error text */
+.text-danger, .has-error .help-block {
+  color: #f87171 !important;
+}
+
+/* Tables */
+table { color: #86efac; }
+.table > thead > tr > th,
+.table > tbody > tr > td {
+  border-color: #166534;
+}
+.table-bordered { border-color: #166534; }
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #052e16;
+}
+
+/* Badges */
+.badge {
+  background-color: #15803d;
+  color: #000;
 }

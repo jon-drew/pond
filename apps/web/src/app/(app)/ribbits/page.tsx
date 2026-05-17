@@ -15,9 +15,9 @@ export default async function RibbitsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-bold">Your Feed</h1>
+      <h1 className="text-xl font-bold text-green-400">Your Feed</h1>
       {ribbits.length === 0 && (
-        <p className="text-gray-500 text-sm">
+        <p className="text-green-700 text-sm">
           No Ribbits yet. Follow some Hoppers or attend some Events to see their Ribbits here.
         </p>
       )}

@@ -42,53 +42,53 @@ export default async function PatternsPage({ params }: { params: Promise<{ slug:
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <Link href={`/events/${slug}`} className="text-sm text-gray-400 hover:text-pond-600">← {event.title}</Link>
-          <h1 className="text-xl font-bold mt-1">Ribbit Patterns</h1>
-          <p className="text-sm text-gray-500">{nodes.length} Ribbits · {nodes.filter((n: PatternNode) => n.parentSlug !== null).length} echoes</p>
+          <Link href={`/events/${slug}`} className="text-sm text-green-700 hover:text-green-400">← {event.title}</Link>
+          <h1 className="text-xl font-bold mt-1 text-green-400">Ribbit Patterns</h1>
+          <p className="text-sm text-green-700">{nodes.length} Ribbits · {nodes.filter((n: PatternNode) => n.parentSlug !== null).length} echoes</p>
         </div>
       </div>
 
       <section className="space-y-3">
-        <h2 className="font-semibold text-base">Echo Tree</h2>
-        <p className="text-xs text-gray-400">Shows who Ribbited because of whom. Expand nodes to see the chain.</p>
+        <h2 className="font-semibold text-base text-green-400">Echo Tree</h2>
+        <p className="text-xs text-green-700">Shows who Ribbited because of whom. Expand nodes to see the chain.</p>
         <RibbitPatternTree nodes={nodes} />
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-semibold text-base">Timeline</h2>
+        <h2 className="font-semibold text-base text-green-400">Timeline</h2>
         <div className="space-y-2">
           {byTime.map((n) => (
-            <div key={n.ribbit.id} className="bg-white rounded-lg border border-gray-100 px-4 py-2 flex items-center justify-between text-sm">
+            <div key={n.ribbit.id} className="bg-black rounded-lg border border-green-900 px-4 py-2 flex items-center justify-between text-sm">
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-400 w-32 shrink-0">
+                <span className="text-xs text-green-700 w-32 shrink-0">
                   {format(new Date(n.ribbit.createdAt), 'MMM d, h:mm a')}
                 </span>
                 <span className="font-medium">@{n.ribbit.sentBy.username}</span>
                 {n.parentSlug && <span className="text-xs text-blue-400">🔁 echo</span>}
               </div>
-              <span className="text-xs text-gray-400">depth {n.depth}</span>
+              <span className="text-xs text-green-700">depth {n.depth}</span>
             </div>
           ))}
         </div>
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-semibold text-base">Leaderboard — Most Echoed</h2>
+        <h2 className="font-semibold text-base text-green-400">Leaderboard — Most Echoed</h2>
         <div className="space-y-2">
           {byReach.slice(0, 10).map((n, i) => (
-            <div key={n.ribbit.id} className="bg-white rounded-lg border border-gray-100 px-4 py-2 flex items-center justify-between text-sm">
+            <div key={n.ribbit.id} className="bg-black rounded-lg border border-green-900 px-4 py-2 flex items-center justify-between text-sm">
               <div className="flex items-center gap-3">
-                <span className="text-gray-400 w-5">#{i + 1}</span>
+                <span className="text-green-700 w-5">#{i + 1}</span>
                 <span className="font-medium">@{n.ribbit.sentBy.username}</span>
               </div>
-              <div className="flex items-center gap-4 text-xs text-gray-500">
+              <div className="flex items-center gap-4 text-xs text-green-700">
                 <span>Score: {n.score}</span>
                 <span>Direct: {n.directEchoCount}</span>
-                <span className="font-medium text-pond-700">Total reach: {n.totalEchoCount}</span>
+                <span className="font-medium text-green-400">Total reach: {n.totalEchoCount}</span>
               </div>
             </div>
           ))}
-          {nodes.length === 0 && <p className="text-gray-400 text-sm">No Ribbits yet.</p>}
+          {nodes.length === 0 && <p className="text-green-700 text-sm">No Ribbits yet.</p>}
         </div>
       </section>
     </div>
