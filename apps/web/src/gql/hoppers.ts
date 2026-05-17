@@ -76,3 +76,12 @@ export const FOLLOW_HOPPER_MUTATION = `
   }
   ${HOPPER_FRAGMENT}
 `;
+
+export const HOPPER_EVENTS_QUERY = `
+  query HopperEvents($slug: String!) {
+    hopperEvents(slug: $slug) {
+      id title text start end slug private active
+      pad { id name slug }
+    }
+  }
+`;
