@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from 'urql';
 import { LOGIN_MUTATION } from '@/gql/hoppers';
-import { cn } from '@/lib/utils';
+import { cn, formatAuthError } from '@/lib/utils';
 
 export default function LoginPage() {
   const router = useRouter();
   const [, login] = useMutation(LOGIN_MUTATION);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{ friendly: string; debug: string } | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -23,7 +23,7 @@ export default function LoginPage() {
     });
     setLoading(false);
     if (result.error) {
-      setError(result.error.graphQLErrors[0]?.message ?? result.error.message);
+      setError(formatAuthError(result.error));
       return;
     }
     router.push('/ribbits');
@@ -38,7 +38,10 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold mt-2 text-green-400">Hop In</h1>
         </div>
         {error && (
-          <p className="text-sm text-red-400 bg-red-950 border border-red-800 rounded px-3 py-2">{error}</p>
+          <div className="text-sm text-red-400 bg-red-950 border border-red-800 rounded px-3 py-2">
+            <p>{error.friendly}</p>
+            <p className="text-xs text-red-700 mt-1">[{error.debug}]</p>
+          </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

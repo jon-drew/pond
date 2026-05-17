@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from 'urql';
 import { REGISTER_MUTATION } from '@/gql/hoppers';
-import { cn } from '@/lib/utils';
+import { cn, formatAuthError } from '@/lib/utils';
 
 export default function RegisterPage() {
   const router = useRouter();
   const [, register] = useMutation(REGISTER_MUTATION);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{ friendly: string; debug: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -25,7 +25,7 @@ export default function RegisterPage() {
     });
     setLoading(false);
     if (result.error) {
-      setError(result.error.graphQLErrors[0]?.message ?? result.error.message);
+      setError(formatAuthError(result.error));
       return;
     }
     setSuccess(true);
@@ -40,7 +40,10 @@ export default function RegisterPage() {
           <h1 className="text-2xl font-bold mt-2 text-green-400">Join the Pond</h1>
         </div>
         {error && (
-          <p className="text-sm text-red-400 bg-red-950 border border-red-800 rounded px-3 py-2">{error}</p>
+          <div className="text-sm text-red-400 bg-red-950 border border-red-800 rounded px-3 py-2">
+            <p>{error.friendly}</p>
+            <p className="text-xs text-red-800 mt-1">[{error.debug}]</p>
+          </div>
         )}
         {success && (
           <p className="text-sm text-green-400 bg-green-950 border border-green-800 rounded px-3 py-2">Account created! Redirecting to login…</p>
