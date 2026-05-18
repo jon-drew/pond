@@ -7,4 +7,4 @@ gunicorn==23.*
 whitenoise==6.*
 PyJWT==2.*
 django-cors-headers==4.*
-Pillow==11.*
+Pillow==12.*
