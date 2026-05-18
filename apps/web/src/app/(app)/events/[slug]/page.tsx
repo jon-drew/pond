@@ -19,6 +19,9 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
   const [ribbitsResult, refetchRibbits] = useQuery({ query: RIBBITS_QUERY });
   const [, rsvp] = useMutation(RSVP_EVENT_MUTATION);
   const [, createRibbit] = useMutation(CREATE_RIBBIT_MUTATION);
+  const [rsvpPending, setRsvpPending] = React.useState(false);
+  const [ribbitPending, setRibbitPending] = React.useState(false);
+  const [bothPending, setBothPending] = React.useState(false);
 
   const event = eventResult.data?.event;
   const me = meResult.data?.me;
@@ -34,10 +37,6 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
     (r: { sentBy: { id: string }; event: { slug: string } }) =>
       r.sentBy.id === me?.id && r.event.slug === slug
   );
-
-  const [rsvpPending, setRsvpPending] = React.useState(false);
-  const [ribbitPending, setRibbitPending] = React.useState(false);
-  const [bothPending, setBothPending] = React.useState(false);
 
   async function handleAttend() {
     setRsvpPending(true);
