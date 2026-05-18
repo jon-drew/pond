@@ -68,6 +68,7 @@ pip-delete-this-directory.txt
 # Django
 *.log
 staticfiles/
+static_project/static_root/
 media/
 *.sqlite3
 *.sqlite3-journal
