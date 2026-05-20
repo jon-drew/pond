@@ -13,6 +13,7 @@ from pond.events.types import EventType
 @strawberry_django.type(models.Ribbit)
 class RibbitType:
     id: auto
+    text: auto
     sent_by: HopperType
     event: EventType
     echo_of: Optional['RibbitType']
@@ -28,6 +29,14 @@ class RibbitType:
     @strawberry_django.field
     def echo_count(self) -> int:
         return self.echoes.filter(deleted_at__isnull=True).count()
+
+    @strawberry_django.field
+    def mentions(self) -> list[HopperType]:
+        from pond.hoppers.models import Hopper
+        usernames = self.mentioned_usernames
+        if not usernames:
+            return []
+        return list(Hopper.objects.filter(username__in=usernames))
 
 
 @strawberry.type

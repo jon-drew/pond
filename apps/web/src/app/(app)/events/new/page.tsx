@@ -21,6 +21,7 @@ export default function NewEventPage() {
     setLoading(true);
     setError(null);
     const fd = new FormData(e.currentTarget);
+    const ticketPriceRaw = fd.get('ticketPrice') as string;
     const result = await createEvent({
       title: fd.get('title') as string,
       text: fd.get('text') as string,
@@ -28,6 +29,7 @@ export default function NewEventPage() {
       end: fd.get('end') as string || null,
       padSlug: fd.get('padSlug') as string || null,
       private: fd.get('private') === 'on',
+      ticketPrice: ticketPriceRaw ? parseFloat(ticketPriceRaw) : null,
     });
     setLoading(false);
     if (result.error) { setError(result.error.graphQLErrors[0]?.message ?? result.error.message); return; }
@@ -67,6 +69,12 @@ export default function NewEventPage() {
               <option key={p.slug} value={p.slug}>{p.name}</option>
             ))}
           </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1 text-green-400">Ticket Price (USD, leave blank for free)</label>
+          <input name="ticketPrice" type="number" min="0" step="0.01" placeholder="e.g. 5.00"
+            className="w-full bg-black border border-green-800 rounded-lg px-3 py-2 text-sm text-green-300 placeholder-green-900 focus:outline-none focus:ring-2 focus:ring-green-600"
+          />
         </div>
         <label className="flex items-center gap-2 text-sm text-green-400">
           <input name="private" type="checkbox" defaultChecked className="rounded border-green-800 bg-black" />

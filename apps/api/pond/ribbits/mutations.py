@@ -27,13 +27,16 @@ def _require_auth(info: Info) -> Hopper:
 class RibbitMutations:
 
     @strawberry.mutation
-    def create_ribbit(self, info: Info, event_slug: str) -> RibbitType:
+    def create_ribbit(self, info: Info, event_slug: str, text: str = '') -> RibbitType:
         me = _require_auth(info)
         try:
             event = Event.objects.get(slug=event_slug, deleted_at__isnull=True)
         except Event.DoesNotExist:
             raise ValueError('Event not found')
-        ribbit, _ = Ribbit.objects.get_or_create(sent_by=me, event=event)
+        ribbit, created = Ribbit.objects.get_or_create(sent_by=me, event=event)
+        if text and (created or not ribbit.text):
+            ribbit.text = text[:500]
+            ribbit.save(update_fields=['text'])
         return ribbit
 
     @strawberry.mutation

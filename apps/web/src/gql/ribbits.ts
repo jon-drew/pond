@@ -1,11 +1,12 @@
 const RIBBIT_FRAGMENT = `
   fragment RibbitFields on RibbitType {
-    id slug createdAt score echoCount
+    id slug createdAt score echoCount text
     sentBy { id username slug }
     event { id title slug }
     echoOf { id slug sentBy { id username slug } }
     likes { id username slug }
     spots { id username slug }
+    mentions { id username slug }
   }
 `;
 
@@ -34,8 +35,8 @@ export const EVENT_RIBBIT_PATTERN_QUERY = `
 `;
 
 export const CREATE_RIBBIT_MUTATION = `
-  mutation CreateRibbit($eventSlug: String!) {
-    createRibbit(eventSlug: $eventSlug) { ...RibbitFields }
+  mutation CreateRibbit($eventSlug: String!, $text: String) {
+    createRibbit(eventSlug: $eventSlug, text: $text) { ...RibbitFields }
   }
   ${RIBBIT_FRAGMENT}
 `;

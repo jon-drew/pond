@@ -1,4 +1,5 @@
 import strawberry
+from strawberry.extensions import QueryDepthLimiter
 
 from pond.hoppers.queries import HopperQueries
 from pond.hoppers.mutations import HopperMutations, AuthPayload
@@ -20,4 +21,15 @@ class Mutation(HopperMutations, PadMutations, EventMutations, RibbitMutations):
     pass
 
 
-schema = strawberry.Schema(query=Query, mutation=Mutation)
+def _build_schema():
+    from django.conf import settings
+    allow_introspection = getattr(settings, 'GRAPHQL_INTROSPECTION', True)
+    return strawberry.Schema(
+        query=Query,
+        mutation=Mutation,
+        extensions=[QueryDepthLimiter(max_depth=10)],
+        introspection=allow_introspection,
+    )
+
+
+schema = _build_schema()

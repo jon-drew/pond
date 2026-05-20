@@ -1,8 +1,12 @@
+import re
+
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils import timezone
 
 from pond.utils import unique_slug_generator
+
+_MENTION_RE = re.compile(r'@([\w]+)')
 
 
 class Ribbit(models.Model):
@@ -33,6 +37,7 @@ class Ribbit(models.Model):
         related_name='spotted_ribbits',
         blank=True,
     )
+    text = models.TextField(blank=True, default='')
     slug = models.SlugField(unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
@@ -51,6 +56,10 @@ class Ribbit(models.Model):
     @property
     def score(self):
         return self.likes.count() + self.spots.count() * 3
+
+    @property
+    def mentioned_usernames(self) -> list[str]:
+        return _MENTION_RE.findall(self.text)
 
 
 def ribbit_pre_save(sender, instance, **kwargs):

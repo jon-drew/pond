@@ -8,3 +8,4 @@ whitenoise==6.*
 PyJWT==2.*
 django-cors-headers==4.*
 Pillow==12.*
+stripe==12.*

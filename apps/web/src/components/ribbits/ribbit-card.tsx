@@ -4,16 +4,42 @@ import { formatDistanceToNow } from 'date-fns';
 interface Hopper { id: string; username: string; slug: string; }
 interface Ribbit {
   id: string; slug: string; createdAt: string; score: number; echoCount: number;
+  text: string;
   sentBy: Hopper;
   event: { id: string; title: string; slug: string };
   echoOf: { id: string; slug: string; sentBy: Hopper } | null;
   likes: Hopper[];
   spots: Hopper[];
+  mentions: Hopper[];
 }
 
 interface Props {
   ribbit: Ribbit;
   myId: string;
+}
+
+function RibbitText({ text, mentions }: { text: string; mentions: Hopper[] }) {
+  if (!text) return null;
+  const mentionMap = Object.fromEntries(mentions.map((h) => [h.username, h.slug]));
+  const parts = text.split(/(@\w+)/g);
+  return (
+    <p className="text-sm text-green-200 leading-relaxed">
+      {parts.map((part, i) => {
+        if (part.startsWith('@')) {
+          const username = part.slice(1);
+          const slug = mentionMap[username];
+          return slug ? (
+            <a key={i} href={`/hoppers/${slug}`} className="text-green-400 hover:underline">
+              {part}
+            </a>
+          ) : (
+            <span key={i} className="text-green-500">{part}</span>
+          );
+        }
+        return part;
+      })}
+    </p>
+  );
 }
 
 export function RibbitCard({ ribbit, myId }: Props) {
@@ -39,6 +65,7 @@ export function RibbitCard({ ribbit, myId }: Props) {
           🔁 Echo of <a href={`/hoppers/${ribbit.echoOf.sentBy.slug}`} className="hover:underline">@{ribbit.echoOf.sentBy.username}</a>
         </p>
       )}
+      <RibbitText text={ribbit.text} mentions={ribbit.mentions} />
       <RibbitActions
         slug={ribbit.slug}
         likeCount={ribbit.likes.length}

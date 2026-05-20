@@ -36,6 +36,10 @@ class Event(models.Model):
         related_name='attending_events',
         blank=True,
     )
+    ticket_price = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True,
+        help_text='Leave blank for free events. Set a price in USD to enable paid ticketing.',
+    )
     private = models.BooleanField(default=True)
     active = models.BooleanField(default=True)
     slug = models.SlugField(unique=True, blank=True)
@@ -58,6 +62,33 @@ class Event(models.Model):
 
     def has_ended(self):
         return self.end <= timezone.now()
+
+
+class Ticket(models.Model):
+    STATUS_PENDING = 'pending'
+    STATUS_PAID = 'paid'
+    STATUS_REFUNDED = 'refunded'
+    STATUS_CHOICES = [
+        (STATUS_PENDING, 'Pending'),
+        (STATUS_PAID, 'Paid'),
+        (STATUS_REFUNDED, 'Refunded'),
+    ]
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='tickets')
+    hopper = models.ForeignKey(
+        'hoppers.Hopper', on_delete=models.CASCADE, related_name='tickets'
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    stripe_session_id = models.CharField(max_length=255, blank=True)
+    amount_paid = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('event', 'hopper')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.hopper} → {self.event} [{self.status}]'
 
 
 def event_pre_save(sender, instance, **kwargs):

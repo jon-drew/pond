@@ -1,3 +1,5 @@
+from typing import Optional
+import strawberry
 import strawberry_django
 from strawberry import auto
 
@@ -16,7 +18,14 @@ class EventType:
     pad: PadType | None
     created_by: HopperType | None
     attending: list[HopperType]
+    ticket_price: Optional[float]
     private: auto
     active: auto
     slug: auto
     created_at: auto
+
+
+@strawberry.type
+class TicketCheckoutType:
+    checkout_url: str
+    ticket_id: int
