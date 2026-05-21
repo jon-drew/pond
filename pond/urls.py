@@ -25,8 +25,22 @@ from django.views.generic import TemplateView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 
 from graphene_django.views import GraphQLView
+from graphql_depth_limit import depth_limit_validator
+from ratelimit.decorators import ratelimit
 
+from .introspection import DisableIntrospection
 from .views import RedirectView
+
+_validation_rules = [depth_limit_validator(8)]
+if not settings.DEBUG:
+    _validation_rules.append(DisableIntrospection)
+
+_graphql_view = GraphQLView.as_view(
+    graphiql=settings.DEBUG,
+    validation_rules=_validation_rules,
+)
+_graphql_view = ratelimit(key='ip', rate='60/m', method='POST', block=True)(_graphql_view)
+_graphql_view = csrf_exempt(_graphql_view)
 
 urlpatterns = [
     url(r'^$', RedirectView, name='login'),
@@ -38,7 +52,7 @@ urlpatterns = [
             form_class=UserCreationForm,
             success_url='/'
     ), name='register'),
-    url(r'^graphql', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    url(r'^graphql', _graphql_view),
     url(r'^hoppers/', include(('hoppers.urls', 'hoppers'), namespace='hopppers')),
     url(r'^pads/', include(('pads.urls', 'pads'), namespace='pads')),
     url(r'^events/', include(('events.urls', 'events'), namespace='events')),

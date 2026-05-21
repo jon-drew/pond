@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     # GraphQL
     'graphene_django',
 
+    # Rate limiting
+    'ratelimit',
+
     # File uploads
     # 'storages'
 ]
